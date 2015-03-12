@@ -1,0 +1,32 @@
+.videos {
+	overflow : auto;
+}
+
+.videos .display {
+	text-align : right
+}
+
+.videos .display i {
+	font-size : 2.3em;
+	cursor : pointer;
+	text-align : center;
+	padding : 2px;
+	border-radius : 5px;
+	border : 1px solid transparent;
+}
+.videos .display i:hover {
+	border : 1px solid #CCC;	
+}
+
+.videos .display i.active {
+	color : black;
+	border : 1px solid #CCC;
+	background : rgba(255,255,255,0.5);
+}
+
+
+
+.videos .poster {
+	float : left;
+	width : 250px;
+}
