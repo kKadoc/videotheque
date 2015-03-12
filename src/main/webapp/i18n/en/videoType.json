@@ -1,0 +1,18 @@
+{
+    "videothequeApp": {
+        "videoType" : {
+            "home": {
+                "title": "VideoTypes",
+                "createLabel": "Create a new VideoType",
+                "createOrEditLabel": "Create or edit a VideoType"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete VideoType {{ id }}?"
+            },
+            "detail": {
+                "title": "VideoType"
+            },
+            "name": "Name"
+        }
+    }
+}

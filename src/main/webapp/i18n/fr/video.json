@@ -1,0 +1,29 @@
+{
+    "videothequeApp": {
+        "video" : {
+            "home": {
+                "title": "Videos",
+                "createLabel": "Créer un nouveau Video",
+                "createOrEditLabel": "Créer ou éditer un Video"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Video {{ id }} ?"
+            },
+            "detail": {
+                "title": "Video"
+            },
+            "imdbId": "ImdbId",
+            "title": "Title",
+            "year": "Year",
+            "rate": "Rate",
+            "duration": "Duration",
+            "favoris": "Favoris",
+            "addDate": "AddDate",
+            "videoType": "videoType",
+            "videoFile": "videoFile",
+            "imgFile": "imgFile",
+            "subFile": "subFile"
+        }
+    }
+}
+

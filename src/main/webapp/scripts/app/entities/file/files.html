@@ -1,0 +1,114 @@
+<div>
+
+    <h2 translate="videothequeApp.file.home.title">File</h2>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveFileModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> <span translate="videothequeApp.file.home.createLabel">Create a new File</span>
+    </button>
+    <div class="modal fade" id="saveFileModal" tabindex="-1" role="dialog" aria-labelledby="myFileLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="create()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myFileLabel" translate="videothequeApp.file.home.createOrEditLabel">Create or edit a File</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="file.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="videothequeApp.file.path">Path</label>
+                            <input type="text" class="form-control" name="path"
+                                   ng-model="file.path">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="videothequeApp.file.type">Type</label>
+                            <input type="text" class="form-control" name="type"
+                                   ng-model="file.type">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteFileConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(file.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="videothequeApp.file.delete.question" translate-values="{id: '{{file.id}}'}">Are you sure you want to delete this File?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="videothequeApp.file.path">Path</th>
+                    <th translate="videothequeApp.file.type">Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="file in files">
+                    <td><a ui-sref="fileDetail({id:file.id})">{{file.id}}</a></td>
+                    <td>{{file.path}}</td>
+                    <td>{{file.type}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="fileDetail({id:file.id})"
+                                class="btn btn-info">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="update(file.id)"
+                                class="btn btn-primary">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(file.id)"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

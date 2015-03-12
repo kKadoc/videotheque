@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <!--
+        Added the entity Video.
+    -->
+    <changeSet id="20150312091640" author="jhipster">
+        <createTable tableName="T_VIDEO">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="imdb_id" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="year" type="integer"/>
+            <column name="rate" type="decimal(10,2)"/>
+            <column name="duration" type="integer"/>
+            <column name="favoris" type="bit"/>
+            <column name="add_date" type="timestamp"/>
+            <column name="videofile_id" type="bigint"/>
+            <column name="imgfile_id" type="bigint"/>
+            <column name="subfile_id" type="bigint"/>
+        </createTable>
+        <dropDefaultValue tableName="T_VIDEO" columnName="add_date" columnDataType="datetime"/>
+
+        
+        <createTable tableName="T_VIDEO_VIDEOTYPE">
+            <column name="videoTypes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="videos_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="videos_id, videoTypes_id" tableName="T_VIDEO_VIDEOTYPE"/>
+
+        <addForeignKeyConstraint baseColumnNames="videos_id"
+                                 baseTableName="T_VIDEO_VIDEOTYPE"
+                                 constraintName="fk_video_videotype_videotype_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_VIDEO"/>
+
+        <addForeignKeyConstraint baseColumnNames="videoTypes_id"
+                                 baseTableName="T_VIDEO_VIDEOTYPE"
+                                 constraintName="fk_videotype_videotype_video_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_VIDEOTYPE"/>
+        
+        <addForeignKeyConstraint baseColumnNames="videofile_id"
+                                 baseTableName="T_VIDEO"
+                                 constraintName="fk_video_videofile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_FILE"/>
+
+        <addForeignKeyConstraint baseColumnNames="imgfile_id"
+                                 baseTableName="T_VIDEO"
+                                 constraintName="fk_video_imgfile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_FILE"/>
+
+        <addForeignKeyConstraint baseColumnNames="subfile_id"
+                                 baseTableName="T_VIDEO"
+                                 constraintName="fk_video_subfile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_FILE"/>
+
+    </changeSet>
+</databaseChangeLog>

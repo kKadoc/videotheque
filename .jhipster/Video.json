@@ -1,0 +1,113 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "videoType",
+            "relationshipNameCapitalized": "VideoType",
+            "relationshipFieldName": "videoType",
+            "otherEntityName": "videoType",
+            "relationshipType": "many-to-many",
+            "otherEntityNameCapitalized": "VideoType",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "videoFile",
+            "relationshipNameCapitalized": "VideoFile",
+            "relationshipFieldName": "videoFile",
+            "otherEntityName": "file",
+            "relationshipType": "one-to-one",
+            "otherEntityNameCapitalized": "File",
+            "ownerSide": true
+        },
+        {
+            "relationshipId": 3,
+            "relationshipName": "imgFile",
+            "relationshipNameCapitalized": "ImgFile",
+            "relationshipFieldName": "imgFile",
+            "otherEntityName": "file",
+            "relationshipType": "one-to-one",
+            "otherEntityNameCapitalized": "File",
+            "ownerSide": true
+        },
+        {
+            "relationshipId": 4,
+            "relationshipName": "subFile",
+            "relationshipNameCapitalized": "SubFile",
+            "relationshipFieldName": "subFile",
+            "otherEntityName": "file",
+            "relationshipType": "one-to-one",
+            "otherEntityNameCapitalized": "File",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "imdbId",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ImdbId",
+            "fieldNameUnderscored": "imdb_id",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Title",
+            "fieldNameUnderscored": "title",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "Year",
+            "fieldNameUnderscored": "year",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "rate",
+            "fieldType": "BigDecimal",
+            "fieldNameCapitalized": "Rate",
+            "fieldNameUnderscored": "rate",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "duration",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "Duration",
+            "fieldNameUnderscored": "duration",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "favoris",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Favoris",
+            "fieldNameUnderscored": "favoris",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "addDate",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "AddDate",
+            "fieldNameUnderscored": "add_date",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": true,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": true,
+    "fieldsContainDateTime": true,
+    "fieldsContainDate": false,
+    "changelogDate": "20150312091640",
+    "pagination": "infinite-scroll",
+    "validation": false
+}
