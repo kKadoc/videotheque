@@ -1,10 +1,10 @@
-<div ng-cloak>
+<div ng-cloak class="videos">
 	<div class="display">
-		<i class="mdi mdi-view-headline"></i>
-		<i class="mdi mdi-view-list"></i>
-		<i class="mdi mdi-view-dashboard"></i>
+		<i class="mdi mdi-view-headline" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"></i>
+		<i class="mdi mdi-view-list" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"></i>
+		<i class="mdi mdi-view-week" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"></i>
 	</div>
-    <div ng-repeat="video in videos">
+    <div ng-class="display" ng-repeat="video in videos">
     	{{video.title}}
     </div>
 </div>
