@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>videotheque</title>
+        <title>Vidéothèque</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -17,6 +17,7 @@
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
+        <link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
         <!-- endbuild -->
     </head>
     <body ng-app="videothequeApp">
@@ -27,10 +28,6 @@
         <div ui-view="navbar" ng-cloak=""></div>
         <div class="container">
             <div class="well" ui-view="content"></div>
-
-            <div class="footer">
-                <p translate="footer">This is your footer</p>
-            </div>
         </div>
 
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
@@ -133,6 +130,9 @@
         <script src="scripts/app/entities/video/video.controller.js"></script>
         <script src="scripts/app/entities/video/video-detail.controller.js"></script>
         <script src="scripts/components/entities/video/video.service.js"></script>
+        
+        <script src="scripts/app/videos/videos.js"></script>
+        <script src="scripts/app/videos/videos.controller.js"></script>
         <!-- endbuild -->
 </body>
 </html>
