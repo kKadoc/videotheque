@@ -8,7 +8,7 @@ angular.module('videothequeApp')
                 var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
 
                 if (angular.isUndefined(language)) {
-                    language = 'en';
+                    language = 'fr';
                 }
 
                 deferred.resolve(language);
