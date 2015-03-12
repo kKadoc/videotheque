@@ -1,0 +1,19 @@
+{
+  "generator-jhipster": {
+    "baseName": "videotheque",
+    "packageName": "fr.mmtech",
+    "packageFolder": "fr/mmtech",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "rememberMeKey": "d127900b05bacf7e1f1d27055bbd69edc7b4f532"
+  }
+}

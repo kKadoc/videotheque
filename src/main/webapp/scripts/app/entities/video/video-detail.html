@@ -1,0 +1,78 @@
+
+<div>
+    <h2><span translate="videothequeApp.video.detail.title">Video</span> {{video.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.imdbId">ImdbId</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.imdbId}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.title">Title</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.title}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.year">Year</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.year}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.rate">Rate</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.rate}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.duration">Duration</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.duration}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.favoris">Favoris</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.favoris}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="videothequeApp.video.addDate">AddDate</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{video.addDate}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="video"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>
