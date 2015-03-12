@@ -24,9 +24,92 @@
 	background : rgba(255,255,255,0.5);
 }
 
+/** COMMUN */
+.videos .video {
+	position : relative;
+}
+
+.videos .mdi-star{
+	display : none;
+}
+
+.videos .favoris .mdi-star{
+	display : block;
+}
+
+.videos .mdi-star-outline {
+	display : block;
+}
+
+.videos .favoris .mdi-star-outline{
+	display : none;
+}
+
+/** STYLE LIST */
+.videos .list {
+	border : 1px solid #CCC;
+	padding : 10px;
+	background : rgba(255, 255, 255, 0.8);
+}
+
+.videos .list p, .videos .list div, .videos .list h4 {
+	display : inline-block;
+}
 
 
-.videos .poster {
+
+
+
+/** STYLE CARD */
+.videos .card {
 	float : left;
 	width : 250px;
+	height : 200px;
+	
+	border : 1px solid #CCC;
+	padding : 10px;
+	background : rgba(255, 255, 255, 0.8);
 }
+
+.videos .card .mdi-star, .videos .card .mdi-star-outline {
+	position : absolute;
+	right : 5px;
+	top : 5px;
+	font-size : 2em;
+}
+
+
+
+
+
+
+
+
+
+/** STYLE POSTER */
+.videos .poster {
+	float : left;
+	width : 200px;
+	height : 250px;
+	
+	border : 1px solid #CCC;
+	padding : 10px;
+	background : rgba(255, 255, 255, 0.8);
+}
+
+.videos .poster .content {
+	display : none;
+}
+
+.videos .poster .mdi-star, .videos .poster .mdi-star-outline {
+	position : absolute;
+	right : 5px;
+	top : 5px;
+	font-size : 2em;
+}
+
+
+
+
+
+
