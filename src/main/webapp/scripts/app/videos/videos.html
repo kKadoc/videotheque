@@ -1,31 +1,23 @@
-<div ng-cloak class="videos">
+<div ng-cloak class="videos" ng-class="display" >
 	<div class="display">
-		<i class="mdi mdi-view-headline"
-			ng-class="{active: display == 'list'}"
-			ng-click="changeDisplay('list')"></i> <i class="mdi mdi-view-list"
-			ng-class="{active: display == 'card'}"
-			ng-click="changeDisplay('card')"></i> <i class="mdi mdi-view-week"
-			ng-class="{active: display == 'poster'}"
-			ng-click="changeDisplay('poster')"></i>
+		<i class="mdi mdi-view-headline" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"></i>
+		<i class="mdi mdi-view-list" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"></i>
+		<i class="mdi mdi-view-week" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"></i>
 	</div>
-	<div ng-class="display" ng-repeat="video in videos">
-		<div class="video" ng-class="{favoris: video.favoris}">
+	
+	<div ng-class="{favoris: video.favoris}" class="video" ng-repeat="video in videos">
 			<i class="mdi mdi-star"></i>
 			<i class="mdi mdi-star-outline"></i>
-			<table>
-				<tr>
-					<img class="cover" ng-src="video.imgFile.path" />
-						<div class="content">
-							<h4>{{video.title}}</h4>
-							<p class="year">{{video.year}}</p>
-							<p class="duration">{{video.duration}}</p>
-							<p class="addDate">{{video.addDate}}</p>
+			<img class="cover" ng-src="/cover/{{video.imgFile.path}}" />
+			<div class="content">
+				<h4>{{video.title}}</h4>
+				<p class="year">{{video.year}}</p>
+				<p class="duration">{{displayDuration(video.duration)}}</p>
+				<p class="addDate">{{displayDate(video.addDate)}}</p>
 
-							<div class="rate s9Stars s9Stars {{video.rate}}" title="{{video.rate}}/10"></div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
+				<div class="rate s9Stars s9Stars {{video.rate}}"
+					title="{{video.rate}}/10"></div>
+				<i class="mdi mdi-play-circle"></i>
+			</div>
 	</div>
 </div>

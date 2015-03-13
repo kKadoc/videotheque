@@ -3,7 +3,10 @@
 }
 
 .videos .display {
-	text-align : right
+	text-align : right;
+	margin : 10px 0;
+	padding : 5px;
+	background : white;
 }
 
 .videos .display i {
@@ -21,7 +24,7 @@
 .videos .display i.active {
 	color : black;
 	border : 1px solid #CCC;
-	background : rgba(255,255,255,0.5);
+	background : rgba(100,100,100,0.1);
 }
 
 /** COMMUN */
@@ -31,29 +34,76 @@
 
 .videos .mdi-star{
 	display : none;
+	color :  #F6C500;
+	cursor : pointer;
+}
+
+.videos .mdi-star-outline {
+	display : block;
+	cursor : pointer;
 }
 
 .videos .favoris .mdi-star{
 	display : block;
 }
 
-.videos .mdi-star-outline {
-	display : block;
-}
 
 .videos .favoris .mdi-star-outline{
 	display : none;
 }
 
+.videos.list .video.favoris {
+	border-color : #F6C500;
+}
+
 /** STYLE LIST */
-.videos .list {
+.videos.list .video {
 	border : 1px solid #CCC;
-	padding : 10px;
+	padding : 5px;
+	margin-top : -1px;
 	background : rgba(255, 255, 255, 0.8);
 }
 
-.videos .list p, .videos .list div, .videos .list h4 {
+.videos.list .cover  {
+	display : none;
+}
+
+.videos.list .video p, .videos.list .video .content, .videos.list .video h4 {
 	display : inline-block;
+}
+
+.videos.list h4 {
+	width :  280px;
+	margin : 0;
+	font-size : 1em;
+	font-weight : bold;
+}
+
+.videos.list .video p {
+	margin : 0;
+	padding : 0;	
+}
+
+.videos.list .year {
+	width : 80px;	
+}
+
+.videos.list .duration {
+	width : 80px;
+}
+
+.videos.list .mdi-play-circle {
+	position : absolute;
+	right :  40px;
+	top : 5px;
+	font-size : 1.4em;
+	cursor : pointer;
+}
+
+.videos.list .mdi-star, .videos.list .mdi-star-outline {
+	position : absolute;
+	right :  10px;
+	font-size : 1.4em;
 }
 
 
@@ -61,17 +111,18 @@
 
 
 /** STYLE CARD */
-.videos .card {
+.videos.card .video {
 	float : left;
 	width : 250px;
 	height : 200px;
 	
 	border : 1px solid #CCC;
 	padding : 10px;
+	margin : 5px;
 	background : rgba(255, 255, 255, 0.8);
 }
 
-.videos .card .mdi-star, .videos .card .mdi-star-outline {
+.videos.card .mdi-star, .videos.card .mdi-star-outline {
 	position : absolute;
 	right : 5px;
 	top : 5px;
@@ -87,21 +138,27 @@
 
 
 /** STYLE POSTER */
-.videos .poster {
+.videos.poster .video {
 	float : left;
 	width : 200px;
-	height : 250px;
+	height : 260px;
 	
 	border : 1px solid #CCC;
-	padding : 10px;
+	margin : 5px;
 	background : rgba(255, 255, 255, 0.8);
+	
+	overflow : hidden;
 }
 
-.videos .poster .content {
+.videos.poster .cover {
+	width : 100%;
+}
+
+.videos.poster .content {
 	display : none;
 }
 
-.videos .poster .mdi-star, .videos .poster .mdi-star-outline {
+.videos.poster .mdi-star, .videos.poster .mdi-star-outline {
 	position : absolute;
 	right : 5px;
 	top : 5px;
