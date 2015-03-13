@@ -3,9 +3,12 @@ package fr.mmtech.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
+
+import fr.mmtech.servlet.CoverServlet;
 import fr.mmtech.web.filter.CachingHttpHeadersFilter;
 import fr.mmtech.web.filter.StaticResourcesProductionFilter;
 import fr.mmtech.web.filter.gzip.GZipServletFilter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.core.env.Environment;
 
 import javax.inject.Inject;
 import javax.servlet.*;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -52,6 +56,10 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
             initGzipFilter(servletContext, disps);
         }
         log.info("Web application fully configured");
+        
+        final ServletRegistration.Dynamic dn = servletContext.addServlet("CoverServlet", CoverServlet.class);
+        dn.setAsyncSupported(true);
+        dn.addMapping(CoverServlet.MAPPING_URL+"*");
     }
 
     /**
