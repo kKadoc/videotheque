@@ -52,5 +52,20 @@ angular.module('videothequeApp')
         	return res;
         };
         
+        // gestion du tri
+        $scope.orderField = "title";
+        $scope.reverseOrder = false;
+        
+        $scope.orderBy = function(in_order) {
+        	if (in_order === $scope.orderField) {
+        		 $scope.reverseOrder = ! $scope.reverseOrder;
+        	}
+        	else {
+        		$scope.orderField = in_order;
+        		$scope.reverseOrder = false;
+        	}
+        };
+
+        
         
     });

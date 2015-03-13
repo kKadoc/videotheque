@@ -1,23 +1,40 @@
-<div ng-cloak class="videos" ng-class="display" >
+<div ng-cloak class="videos" ng-class="display">
 	<div class="display">
-		<i class="mdi mdi-view-headline" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"></i>
-		<i class="mdi mdi-view-list" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"></i>
-		<i class="mdi mdi-view-week" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"></i>
-	</div>
-	
-	<div ng-class="{favoris: video.favoris}" class="video" ng-repeat="video in videos">
-			<i class="mdi mdi-star"></i>
-			<i class="mdi mdi-star-outline"></i>
-			<img class="cover" ng-src="/cover/{{video.imgFile.path}}" />
-			<div class="content">
-				<h4>{{video.title}}</h4>
-				<p class="year">{{video.year}}</p>
-				<p class="duration">{{displayDuration(video.duration)}}</p>
-				<p class="addDate">{{displayDate(video.addDate)}}</p>
-
-				<div class="rate s9Stars s9Stars {{video.rate}}"
-					title="{{video.rate}}/10"></div>
-				<i class="mdi mdi-play-circle"></i>
+		<form class="form-inline">
+			<input ng-model="filter" type="text" placeholder="Filtrer par" autofocus>
+		
+			<label>Trier par</label>
+			<div class="btn-group" role="group" aria-label="...">
+				<button type="button" class="btn btn-default" ng-click="orderBy('title')" ng-class="{active: orderField == 'title'}">Titre</button>
+				<button type="button" class="btn btn-default" ng-click="orderBy('year')" ng-class="{active: orderField == 'year'}">Année</button>
+				<button type="button" class="btn btn-default" ng-click="orderBy('duration')" ng-class="{active: orderField == 'duration'}">Durée</button>
+				<button type="button" class="btn btn-default" ng-click="orderBy('addDate')" ng-class="{active: orderField == 'addDate'}">Date d'ajout</button>
+				<button type="button" class="btn btn-default" ng-click="orderBy('favoris')" ng-class="{active: orderField == 'favoris'}">Favoris</button>
+				<button type="button" class="btn btn-default" ng-click="orderBy('rate')" ng-class="{active: orderField == 'rate'}">Note</button>
 			</div>
+			
+			<div class="btn-group right" role="group" aria-label="...">
+				<button type="button" class="btn btn-default" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"><i class="mdi mdi-view-list"></i></button>
+				<button type="button" class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-headline"></i></button>
+				<button type="button" class="btn btn-default" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"><i class="mdi mdi-view-week"></i></button>
+			</div>
+		</form>
+
+	</div>
+
+	<div ng-class="{favoris: video.favoris}" class="video"
+		ng-repeat="video in videos | filter:filter | orderBy: orderField : reverseOrder">
+		<i class="mdi mdi-star"></i> <i class="mdi mdi-star-outline"></i> <img
+			class="cover" ng-src="/cover/{{video.imgFile.path}}" />
+		<div class="content">
+			<h4>{{video.title}}</h4>
+			<p class="year">{{video.year}}</p>
+			<p class="duration">{{displayDuration(video.duration)}}</p>
+			<p class="addDate">{{displayDate(video.addDate)}}</p>
+
+			<div class="rate s9Stars s9Stars {{video.rate}}"
+				title="{{video.rate}}/10"></div>
+			<i class="mdi mdi-play-circle"></i>
+		</div>
 	</div>
 </div>

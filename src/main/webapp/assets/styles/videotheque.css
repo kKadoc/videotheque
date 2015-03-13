@@ -3,28 +3,28 @@
 }
 
 .videos .display {
-	text-align : right;
 	margin : 10px 0;
-	padding : 5px;
+	padding : 10px;
 	background : white;
 }
 
-.videos .display i {
-	font-size : 2.3em;
-	cursor : pointer;
-	text-align : center;
-	padding : 2px;
-	border-radius : 5px;
-	border : 1px solid transparent;
-}
-.videos .display i:hover {
-	border : 1px solid #CCC;	
+.videos .display .form-inline input {
+	padding : 4px;
+	margin : 3px 10px;
 }
 
-.videos .display i.active {
-	color : black;
-	border : 1px solid #CCC;
-	background : rgba(100,100,100,0.1);
+.videos .display .form-inline label {
+	font-weight : normal;
+	color : #999;
+}
+
+.videos .display .right {
+	float : right;
+	margin-top : -3px;
+}
+
+.videos .display i {
+	font-size : 2em;
 }
 
 /** COMMUN */
@@ -52,9 +52,6 @@
 	display : none;
 }
 
-.videos.list .video.favoris {
-	border-color : #F6C500;
-}
 
 /** STYLE LIST */
 .videos.list .video {
@@ -77,6 +74,10 @@
 	margin : 0;
 	font-size : 1em;
 	font-weight : bold;
+}
+
+.videos.list .favoris h4 {
+	color : #F6C500;
 }
 
 .videos.list .video p {
