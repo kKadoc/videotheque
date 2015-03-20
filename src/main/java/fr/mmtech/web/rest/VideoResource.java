@@ -1,9 +1,12 @@
 package fr.mmtech.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+
 import fr.mmtech.domain.Video;
 import fr.mmtech.repository.VideoRepository;
+import fr.mmtech.service.VideoService;
 import fr.mmtech.web.rest.util.PaginationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -30,6 +34,9 @@ public class VideoResource {
 
     @Inject
     private VideoRepository videoRepository;
+    
+    @Inject
+    private VideoService videoService;
 
     /**
      * POST  /videos -> Create a new video.
@@ -104,5 +111,16 @@ public class VideoResource {
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Video : {}", id);
         videoRepository.delete(id);
+    }
+    
+    /**
+     * GET  /videos/:id -> delete the "id" video.
+     */
+    @RequestMapping(value = "/play/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void play(@PathVariable Long id) {
+    	videoService.play(id);
     }
 }

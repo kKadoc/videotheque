@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideosController', function ($scope, localStorageService, Video) {
+    .controller('VideosController', function ($scope, localStorageService, Video, VideoService) {
     	
     	// récupération de la liste
     	$scope.videos = [];
@@ -66,6 +66,9 @@ angular.module('videothequeApp')
         	}
         };
 
-        
+        //lecture d'une video
+        $scope.play = function(id) {
+        	VideoService.play(id);
+        };
         
     });
