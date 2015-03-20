@@ -7,16 +7,32 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
+import fr.mmtech.repository.ConfigFieldRepository;
+
 @SuppressWarnings("serial")
 public class CoverServlet extends HttpServlet {
 	
-	public static final String MAPPING_URL = "/cover/";
+	@Autowired
+	private ConfigFieldRepository configRepository;
+	
+	public static final String MAPPING_URL = "/cover";
 
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+			      config.getServletContext());
+	}
+	
 	public static interface LookupResult {
 		public void respondGet(HttpServletResponse resp) throws IOException;
 
@@ -136,12 +152,13 @@ public class CoverServlet extends HttpServlet {
 	}
 
 	protected LookupResult lookupNoCache(HttpServletRequest req) {
+		System.out.println("DEBUG SERVICE = "+configRepository);
 		String path = getPath(req);
 		if (isForbidden(path))
 			return new Error(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
 
 		path = path.replace(MAPPING_URL, "");
-		path = "C://tmp/"+path;
+		path = configRepository.getPath()+path;
 
 		final String mimeType = getMimeType(path);
 

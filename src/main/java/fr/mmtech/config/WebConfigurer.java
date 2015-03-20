@@ -59,7 +59,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         
         final ServletRegistration.Dynamic dn = servletContext.addServlet("CoverServlet", CoverServlet.class);
         dn.setAsyncSupported(true);
-        dn.addMapping(CoverServlet.MAPPING_URL+"*");
+        dn.addMapping(CoverServlet.MAPPING_URL+"/*");
     }
 
     /**
