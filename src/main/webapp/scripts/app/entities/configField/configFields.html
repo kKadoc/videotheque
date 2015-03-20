@@ -1,0 +1,114 @@
+<div>
+
+    <h2 translate="videothequeApp.configField.home.title">ConfigField</h2>
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveConfigFieldModal" ng-click="clear()">
+        <span class="glyphicon glyphicon-flash"></span> <span translate="videothequeApp.configField.home.createLabel">Create a new ConfigField</span>
+    </button>
+    <div class="modal fade" id="saveConfigFieldModal" tabindex="-1" role="dialog" aria-labelledby="myConfigFieldLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="create()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myConfigFieldLabel" translate="videothequeApp.configField.home.createOrEditLabel">Create or edit a ConfigField</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="configField.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="videothequeApp.configField.key">Key</label>
+                            <input type="text" class="form-control" name="key"
+                                   ng-model="configField.key">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="videothequeApp.configField.content">Content</label>
+                            <input type="text" class="form-control" name="content"
+                                   ng-model="configField.content">
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteConfigFieldConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(configField.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="videothequeApp.configField.delete.question" translate-values="{id: '{{configField.id}}'}">Are you sure you want to delete this ConfigField?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="videothequeApp.configField.key">Key</th>
+                    <th translate="videothequeApp.configField.content">Content</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="configField in configFields">
+                    <td><a ui-sref="configFieldDetail({id:configField.id})">{{configField.id}}</a></td>
+                    <td>{{configField.key}}</td>
+                    <td>{{configField.content}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="configFieldDetail({id:configField.id})"
+                                class="btn btn-info">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="update(configField.id)"
+                                class="btn btn-primary">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(configField.id)"
+                                class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

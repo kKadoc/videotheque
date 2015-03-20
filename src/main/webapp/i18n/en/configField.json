@@ -1,0 +1,19 @@
+{
+    "videothequeApp": {
+        "configField" : {
+            "home": {
+                "title": "ConfigFields",
+                "createLabel": "Create a new ConfigField",
+                "createOrEditLabel": "Create or edit a ConfigField"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete ConfigField {{ id }}?"
+            },
+            "detail": {
+                "title": "ConfigField"
+            },
+            "key": "Key",
+            "content": "Content"
+        }
+    }
+}

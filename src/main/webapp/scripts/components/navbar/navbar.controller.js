@@ -8,6 +8,6 @@ angular.module('videothequeApp')
 
         $scope.logout = function () {
             Auth.logout();
-            $state.go('home');
+            $state.go('videos');
         };
     });

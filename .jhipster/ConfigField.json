@@ -1,0 +1,31 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "key",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Key",
+            "fieldNameUnderscored": "key",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "content",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Content",
+            "fieldNameUnderscored": "content",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150320081342",
+    "pagination": "no",
+    "validation": false
+}

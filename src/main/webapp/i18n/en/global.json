@@ -9,6 +9,7 @@
                 "file": "File",
                 "videoType": "VideoType",
                 "video": "Video",
+                "configField": "ConfigField",
                 "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {
