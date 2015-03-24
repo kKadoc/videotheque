@@ -55,6 +55,19 @@ angular.module('videothequeApp')
         	return res;
         };
         
+        //methode d'affichage de la notation
+        $scope.displayRate = function(in_rate) {
+        	in_rate = in_rate/2;
+        	var res = "rate";
+        	var int = Math.floor(in_rate);
+        	res += int;
+        	var dec = in_rate - int;
+        	if (dec >= 0.5) {
+        		res+="_5";
+        	}
+        	return res;
+        };
+        
         // gestion du tri
         $scope.orderField = "title";
         $scope.reverseOrder = false;

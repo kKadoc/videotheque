@@ -5,7 +5,7 @@ angular.module('videothequeApp')
         $stateProvider
             .state('home', {
                 parent: 'site',
-                url: '',
+                url: '/main',
                 data: {
                     roles: []
                 },

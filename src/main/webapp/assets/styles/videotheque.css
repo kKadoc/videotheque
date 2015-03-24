@@ -1,11 +1,43 @@
+#createVideoPanel label {
+	display : inline-block;
+	width : 150px;
+}
+
+#createVideoPanel .listGuess {
+	font-size : 0.9em;
+}
+
+
+#createVideoPanel .listGuess a {
+	display : block;
+	margin : 3px 0;
+	cursor : pointer;
+}
+
+.percent {
+    position: absolute; width: 300px; height: 14px; z-index: 1; text-align: center; font-size: 0.8em; color: white;
+}
+
+.progress-bar {
+    width: 300px; height: 14px;
+    border-radius: 10px;
+    border: 1px solid #CCC;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#6666cc), to(#4b4b95));
+    border-image: initial;
+}
+
+
+.drop-over {
+	background : red;
+}
+
 .videos {
 	overflow : auto;
 }
 
 .videos .display {
-	margin : 10px 0;
+	margin : -5px 0px 15px 0px;
 	padding : 10px;
-	background : white;
 }
 
 .videos .display .form-inline input {
@@ -32,24 +64,12 @@
 	position : relative;
 }
 
-.videos .mdi-star{
-	display : none;
-	color :  #F6C500;
+.videos .star-icon{
 	cursor : pointer;
 }
 
-.videos .mdi-star-outline {
-	display : block;
-	cursor : pointer;
-}
-
-.videos .favoris .mdi-star{
-	display : block;
-}
-
-
-.videos .favoris .mdi-star-outline{
-	display : none;
+.videos .favoris .star-icon{
+	color : #F6C500;
 }
 
 
@@ -93,18 +113,82 @@
 	width : 80px;
 }
 
-.videos.list .mdi-play-circle {
+.videos.list .play-icon {
 	position : absolute;
 	right :  40px;
-	top : 5px;
+	top : 6px;
 	font-size : 1.4em;
 	cursor : pointer;
 }
 
-.videos.list .mdi-star, .videos.list .mdi-star-outline {
+.videos.list .play-icon:hover {
+	color : red;
+}
+
+.videos.list .star-icon {
 	position : absolute;
 	right :  10px;
+	top : 6px;
 	font-size : 1.4em;
+}
+
+.videos.list .rate {
+	display : inline-block;
+	
+	position : relative;
+	top : 5px;
+	margin-left : 30px;
+	width: 80px;
+	height: 18px;
+	
+	background-image: url(../images/aui_sprite_0036-1x._V1_.png);
+	background-repeat: no-repeat;
+	-webkit-background-size: 400px 650px;
+	background-size: 400px 650px;
+}
+
+.videos.list .rate.rate0 {
+	background-position: -85px -368px;
+}
+
+.videos.list .rate.rate0_5 {
+	background-position: -239px -368px;
+}
+
+.videos.list .rate.rate1 {
+	background-position: -69px -368px;
+}
+
+.videos.list .rate.rate1_5 {
+	background-position: -223px -368px;
+}
+
+.videos.list .rate.rate2 {
+	background-position: -53px -368px;
+}
+
+.videos.list .rate.rate2_5 {
+	background-position: -207px -368px;
+}
+
+.videos.list .rate.rate3 {
+	background-position: -37px -368px;
+}
+
+.videos.list .rate.rate3_5 {
+	background-position: -191px -368px;
+}
+
+.videos.list .rate.rate4 {
+	background-position: -21px -368px;
+}
+
+.videos.list .rate.rate4_5 {
+	background-position: -175px -368px;
+}
+
+.videos.list .rate.rate5 {	
+	background-position: -5px -368px;
 }
 
 
@@ -123,7 +207,7 @@
 	background : rgba(255, 255, 255, 0.8);
 }
 
-.videos.card .mdi-star, .videos.card .mdi-star-outline {
+.videos.card .star-icon {
 	position : absolute;
 	right : 5px;
 	top : 5px;
@@ -141,29 +225,39 @@
 /** STYLE POSTER */
 .videos.poster .video {
 	float : left;
-	width : 200px;
-	height : 260px;
+	width : 216px;
+	height : 319px;
 	
-	border : 1px solid #CCC;
-	margin : 5px;
+	
+	box-shadow : 2px 2px 6px grey;
+	margin : 7px;
 	background : rgba(255, 255, 255, 0.8);
 	
 	overflow : hidden;
+	padding : 0;
 }
 
 .videos.poster .cover {
 	width : 100%;
+	height : 100%;
 }
 
 .videos.poster .content {
 	display : none;
 }
 
-.videos.poster .mdi-star, .videos.poster .mdi-star-outline {
+.videos.poster .star-icon {
 	position : absolute;
 	right : 5px;
 	top : 5px;
 	font-size : 2em;
+	text-shadow : 1px 1px 3px black;
+	
+	display : none;
+}
+
+.videos.poster .video.favoris {
+	
 }
 
 
