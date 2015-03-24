@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideosController', function ($scope, localStorageService, Video, VideoService) {
+    .controller('VideosController', function ($scope, $cookies, $browser, localStorageService, Video, VideoService) {
+    	
+    	var videoExt = ["mp4", "divx", "avi", "mov", "mpg"];
+    	var subExt = ["srt"];
     	
     	// récupération de la liste
     	$scope.videos = [];
@@ -71,4 +74,90 @@ angular.module('videothequeApp')
         	VideoService.play(id);
         };
         
+        $scope.videoFile;
+        $scope.subFile;
+        //affichage de la création d'une video
+        $scope.dropFiles = function (fileList) {
+        	
+        	//on identifie les fichiers à importer
+        	$scope.videoFile = null;
+            $scope.subFile = null;
+            
+            var i = 0;
+            for (i = 0; i < fileList.length; i++) {
+            	var file = fileList[i];
+            	
+            	var ext = file.name.substr(file.name.lastIndexOf('.') + 1);
+            	if ($scope.videoFile == null && videoExt.indexOf(ext) != -1) {
+            		$scope.videoFile = file;
+            	}
+            	if ($scope.subFile == null && subExt.indexOf(ext) != -1) {
+            		$scope.subFile = file;
+            	}
+            }
+            
+            if ($scope.videoFile == null) {
+            	alert("Aucun fichier vidéo exploitable n'a été trouvé");
+            	return;
+            }
+            
+            //on tente de deviner le film
+            $scope.listGuess = null;
+            VideoService.guess(file.name, function (data) {
+                $scope.listGuess = data;
+            });
+            
+            //on affiche le module de creation
+            $('#createVideoPanel').modal('show');
+        };
+           
+        $scope.createVideo = function(imdbId) {
+        	var csrfValue = $browser.cookies()["CSRF-TOKEN"];
+        	
+            var fd = new FormData();
+            fd.append("videoFile", $scope.videoFile);
+            if ($scope.subFile != null) {
+            	fd.append("subFile", $scope.subFile);
+            }
+            fd.append("_csrf", csrfValue);
+            fd.append("imdbId", imdbId);
+
+            var xhr = new XMLHttpRequest();
+            
+            xhr.upload.addEventListener("progress", uploadProgress, false);
+            xhr.addEventListener("load", uploadComplete, false);
+            xhr.addEventListener("error", uploadFailed, false);
+            xhr.addEventListener("abort", uploadCanceled, false);
+            xhr.open("POST", "/api/uploadVideo");
+            $scope.progressVisible = true;
+            xhr.send(fd);
+            
+            return false;
+        };
+
+        function uploadProgress(evt) {
+            $scope.$apply(function(){
+                if (evt.lengthComputable) {
+                    $scope.progress = Math.round(evt.loaded * 100 / evt.total);
+                } else {
+                    $scope.progress = 'unable to compute';
+                }
+            })
+        };
+
+        function uploadComplete(evt) {
+            /* This event is raised when the server send back a response */
+            alert(evt.target.responseText);
+        };
+
+        function uploadFailed(evt) {
+            alert("There was an error attempting to upload the file.");
+        };
+
+        function uploadCanceled(evt) {
+            $scope.$apply(function(){
+                $scope.progressVisible = false;
+            })
+            alert("The upload has been canceled by the user or the browser dropped the connection.");
+        };
     });

@@ -5,11 +5,19 @@ angular.module('videothequeApp')
     	var service = {};
         
     	service.play = function(id){
-    		console.log(id);
     		$http({
     		    url: 'api/play/' + id, 
     		    method: "GET"
     		 });
+    	};
+    	
+    	service.guess = function(filename, callback){
+    		console.log(filename);
+    		$http({
+    		    url: 'api/guess', 
+    		    method: "POST",
+    		    data: { f: 'filename' }
+    		 }).success(callback);
     	};
     	return service;
     });

@@ -2,6 +2,7 @@ package fr.mmtech.domain;
 
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +13,10 @@ import java.util.Objects;
 @Table(name = "T_FILE")
 public class File implements Serializable {
 
+	public static final String IMG_FLAG = "IMG";
+	public static final String VIDEO_FLAG = "VIDEO";
+	public static final String SUBS_FLAG = "SUBS";
+	
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +27,15 @@ public class File implements Serializable {
     @Column(name = "type")
     private String type;
 
-    public Long getId() {
+    public File(String path, String type) {
+		this.path = path;
+		this.type = type;
+	}
+
+	public File() {
+	}
+
+	public Long getId() {
         return id;
     }
 

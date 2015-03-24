@@ -1,4 +1,51 @@
-<div ng-cloak class="videos" ng-class="display">
+<div class="modal fade" id="createVideoPanel" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+	<div class="modal-dialog">
+	    <div class="modal-content">
+	        <form name="editForm" role="form" novalidate ng-submit="create()">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
+	                <h4 class="modal-title">Nouvelle vidéo</h4>
+	            </div>
+	            <div class="modal-body">
+	            	<div class="form-group">
+	            		<label>Fichier vidéo</label>
+	            		<input type="text" class="form-control" value="{{videoFile.name}}" readonly>
+	            	</div>
+	            	<div class="form-group">
+	            		<label>Fichier sous-titre</label>
+	            		<input type="text" class="form-control" value="{{subFile.name}}" readonly>
+	            	</div>
+	            	
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Propositions IMDB</h3>
+						</div>
+						<div class="panel-body listGuess">
+							<a ng-repeat="guess in listGuess" ng-click="createVideo(guess.imdbId)">
+			                	<b>{{guess.title}}</b> <span>({{guess.year}})</span> <span>type : {{guess.type}}</span>
+			                </a>
+						</div>
+					</div>
+					
+					<div ng-show="progressVisible">
+			            <div class="percent">{{progress}}%</div>
+			            <div class="progress-bar">
+			                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+			            </div>
+			        </div>
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+	                    <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+	                </button>
+	            </div>
+	        </form>
+	    </div>
+	</div>
+</div>
+    
+<div ng-cloak id="videos-container" class="videos" ng-class="display" droppable>
 	<div class="display">
 		<form class="form-inline">
 			<input ng-model="filter" type="text" placeholder="Filtrer par" autofocus>
@@ -15,13 +62,12 @@
 			
 			<div class="btn-group right" role="group" aria-label="...">
 				<button type="button" class="btn btn-default" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"><i class="mdi mdi-view-list"></i></button>
-				<button type="button" class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-headline"></i></button>
+				<button type="button" disabled class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-headline"></i></button>
 				<button type="button" class="btn btn-default" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"><i class="mdi mdi-view-week"></i></button>
 			</div>
 		</form>
-
 	</div>
-
+	
 	<div ng-class="{favoris: video.favoris}" class="video"
 		ng-repeat="video in videos | filter:filter | orderBy: orderField : reverseOrder">
 		<i class="mdi mdi-star"></i> <i class="mdi mdi-star-outline"></i> <img
@@ -31,7 +77,7 @@
 			<p class="year">{{video.year}}</p>
 			<p class="duration">{{displayDuration(video.duration)}}</p>
 			<p class="addDate">{{displayDate(video.addDate)}}</p>
-
+			
 			<div class="rate s9Stars s9Stars {{video.rate}}"
 				title="{{video.rate}}/10"></div>
 			<i class="mdi mdi-play-circle" ng-click="play(video.id)"></i>

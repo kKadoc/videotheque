@@ -1,18 +1,32 @@
 package fr.mmtech.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import fr.mmtech.domain.util.CustomDateTimeDeserializer;
-import fr.mmtech.domain.util.CustomDateTimeSerializer;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import fr.mmtech.domain.util.CustomDateTimeDeserializer;
+import fr.mmtech.domain.util.CustomDateTimeSerializer;
 
 /**
  * A Video.
@@ -56,12 +70,15 @@ public class Video implements Serializable {
     private Set<VideoType> videoTypes = new HashSet<>();
 
     @OneToOne
+    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private File videoFile;
 
     @OneToOne
+    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private File imgFile;
 
     @OneToOne
+    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private File subFile;
 
     public Long getId() {
