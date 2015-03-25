@@ -2,27 +2,27 @@
     "videothequeApp": {
         "video" : {
             "home": {
-                "title": "Videos",
-                "createLabel": "Créer un nouveau Video",
-                "createOrEditLabel": "Créer ou éditer un Video"
+                "title": "Vidéos",
+                "createLabel": "Créer une nouvelle vidéo",
+                "createOrEditLabel": "Créer ou éditer une vidéo"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Video {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la vidéo {{ id }} ?"
             },
             "detail": {
                 "title": "Video"
             },
             "imdbId": "ImdbId",
-            "title": "Title",
-            "year": "Year",
-            "rate": "Rate",
-            "duration": "Duration",
+            "title": "Titre",
+            "year": "Année",
+            "rate": "Note",
+            "duration": "Durée",
             "favoris": "Favoris",
-            "addDate": "AddDate",
-            "videoType": "videoType",
-            "videoFile": "videoFile",
-            "imgFile": "imgFile",
-            "subFile": "subFile"
+            "addDate": "Date d'ajout",
+            "videoType": "Type",
+            "videoFile": "idFichierVidéo",
+            "imgFile": "idFichierImage",
+            "subFile": "idFichierSousTitres"
         }
     }
 }

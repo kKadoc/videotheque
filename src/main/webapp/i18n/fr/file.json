@@ -2,17 +2,17 @@
     "videothequeApp": {
         "file" : {
             "home": {
-                "title": "Files",
-                "createLabel": "Créer un nouveau File",
-                "createOrEditLabel": "Créer ou éditer un File"
+                "title": "Fichiers",
+                "createLabel": "Créer un nouveau fichier",
+                "createOrEditLabel": "Créer ou éditer un fichier"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le File {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le fichier {{ id }} ?"
             },
             "detail": {
-                "title": "File"
+                "title": "Fichier"
             },
-            "path": "Path",
+            "path": "Chemin",
             "type": "Type"
         }
     }

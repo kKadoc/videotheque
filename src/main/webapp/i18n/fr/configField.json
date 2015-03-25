@@ -2,18 +2,18 @@
     "videothequeApp": {
         "configField" : {
             "home": {
-                "title": "ConfigFields",
-                "createLabel": "Créer un nouveau ConfigField",
-                "createOrEditLabel": "Créer ou éditer un ConfigField"
+                "title": "Configuration",
+                "createLabel": "Créer un nouveau paramètre",
+                "createOrEditLabel": "Créer ou éditer un paramètre"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le ConfigField {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le paramètre {{ id }} ?"
             },
             "detail": {
-                "title": "ConfigField"
+                "title": "Paramètre"
             },
-            "key": "Key",
-            "content": "Content"
+            "key": "Clé",
+            "content": "Valeur"
         }
     }
 }

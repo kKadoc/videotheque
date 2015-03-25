@@ -1,4 +1,3 @@
-"configField": "ConfigField",
 {
     "global": {
         "title": "Vidéothèque",
@@ -7,9 +6,10 @@
             "home": "Accueil",
             "entities": {
                 "main": "Entités",
-                "file": "File",
-                "videoType": "VideoType",
-                "video": "Video",
+                "file": "Fichiers",
+                "videoType": "Types de films",
+                "video": "Vidéos",
+                "configField": "Configuration",
                 "additionalEntity": "JHipster va ajouter de nouvelles entités"
             },
             "account": {

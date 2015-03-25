@@ -2,17 +2,17 @@
     "videothequeApp": {
         "videoType" : {
             "home": {
-                "title": "VideoTypes",
-                "createLabel": "Créer un nouveau VideoType",
-                "createOrEditLabel": "Créer ou éditer un VideoType"
+                "title": "Types de films",
+                "createLabel": "Créer un nouveau type",
+                "createOrEditLabel": "Créer ou éditer un type"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le VideoType {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le type {{ id }} ?"
             },
             "detail": {
-                "title": "VideoType"
+                "title": "Type"
             },
-            "name": "Name"
+            "name": "Nom"
         }
     }
 }
