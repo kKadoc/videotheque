@@ -347,15 +347,16 @@ public class IMDBUtil {
     }
 
     /**
-     * Parse la notation (string) pour la convertir en entier
+     * Parse la notation (string) pour la convertir en BigDecimal
      * 
      * @param str
      * @return
      */
     private BigDecimal buildRate(String str) {
-	// on vire tous les charactères
-	str = str.replaceAll("\\D", "");
-	BigDecimal res = new BigDecimal(str);
-	return res;
+	try {
+	    return new BigDecimal(str);
+	} catch (Exception e) {
+	    return BigDecimal.ZERO;
+	}
     }
 }
