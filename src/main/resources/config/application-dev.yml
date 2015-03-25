@@ -5,8 +5,8 @@ spring:
     profiles:
         active: dev
     datasource:
-        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/videotheque
+        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+        url: jdbc:h2:./db;DB_CLOSE_DELAY=-1
         databaseName: 
         serverName: 
         username: root
@@ -17,8 +17,8 @@ spring:
         useServerPrepStmts: true
 
     jpa:
-        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
-        database: MYSQL
+        database-platform: org.hibernate.dialect.H2Dialect
+        database: H2
         openInView: false
         show_sql: true
         generate-ddl: false
