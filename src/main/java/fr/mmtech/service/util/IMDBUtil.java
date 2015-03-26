@@ -44,10 +44,10 @@ public class IMDBUtil {
      * @throws IMDBException
      */
     public List<GuessDTO> getKeywordGuess(String keyword) throws Exception {
-	// String response = makeRequestFromKeyword(keyword);
+	 String response = makeRequestFromKeyword(keyword);
 
 	// TODO Bouchon
-	String response = "<root response=\"True\"><Movie Title=\"The Dark Knight\" Year=\"2008\" imdbID=\"tt0468569\" Type=\"movie\"/><Movie Title=\"The Dark Knight Rises\" Year=\"2012\" imdbID=\"tt1345836\" Type=\"movie\"/><Movie Title=\"Transformers: Dark of the Moon\" Year=\"2011\" imdbID=\"tt1399103\" Type=\"movie\"/><Movie Title=\"Thor: The Dark World\" Year=\"2013\" imdbID=\"tt1981115\" Type=\"movie\"/><Movie Title=\"Zero Dark Thirty\" Year=\"2012\" imdbID=\"tt1790885\" Type=\"movie\"/><Movie Title=\"Dark Shadows\" Year=\"2012\" imdbID=\"tt1077368\" Type=\"movie\"/><Movie Title=\"Dark City\" Year=\"1998\" imdbID=\"tt0118929\" Type=\"movie\"/><Movie Title=\"Dancer in the Dark\" Year=\"2000\" imdbID=\"tt0168629\" Type=\"movie\"/><Movie Title=\"Dark Water\" Year=\"2005\" imdbID=\"tt0382628\" Type=\"movie\"/><Movie Title=\"Dark Skies\" Year=\"2013\" imdbID=\"tt2387433\" Type=\"movie\"/></root>";
+//	String response = "<root response=\"True\"><Movie Title=\"The Dark Knight\" Year=\"2008\" imdbID=\"tt0468569\" Type=\"movie\"/><Movie Title=\"The Dark Knight Rises\" Year=\"2012\" imdbID=\"tt1345836\" Type=\"movie\"/><Movie Title=\"Transformers: Dark of the Moon\" Year=\"2011\" imdbID=\"tt1399103\" Type=\"movie\"/><Movie Title=\"Thor: The Dark World\" Year=\"2013\" imdbID=\"tt1981115\" Type=\"movie\"/><Movie Title=\"Zero Dark Thirty\" Year=\"2012\" imdbID=\"tt1790885\" Type=\"movie\"/><Movie Title=\"Dark Shadows\" Year=\"2012\" imdbID=\"tt1077368\" Type=\"movie\"/><Movie Title=\"Dark City\" Year=\"1998\" imdbID=\"tt0118929\" Type=\"movie\"/><Movie Title=\"Dancer in the Dark\" Year=\"2000\" imdbID=\"tt0168629\" Type=\"movie\"/><Movie Title=\"Dark Water\" Year=\"2005\" imdbID=\"tt0382628\" Type=\"movie\"/><Movie Title=\"Dark Skies\" Year=\"2013\" imdbID=\"tt2387433\" Type=\"movie\"/></root>";
 
 	if (response != null)
 	    return buildGuessListFromKeywordResponse(response);
@@ -65,10 +65,10 @@ public class IMDBUtil {
      * @throws IMDBException
      */
     public VideoImdbDTO getVideo(String imdbId) throws Exception {
-	// String response = makeRequestFromId(imdbId);
+	 String response = makeRequestFromId(imdbId);
 
 	// TODO bouchon
-	String response = "<root response=\"True\"><movie title=\"The Social Network\" year=\"2010\" rated=\"PG-13\" released=\"01 Oct 2010\" runtime=\"120 min\" genre=\"Biography, Drama\" director=\"David Fincher\" writer=\"Aaron Sorkin (screenplay), Ben Mezrich (book)\" actors=\"Jesse Eisenberg, Rooney Mara, Bryan Barter, Dustin Fitzsimons\" plot=\"Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, but is later sued by two brothers who claimed he stole their idea, and the cofounder who was later squeezed out of the business.\" language=\"English, French\" country=\"USA\" awards=\"Won 3 Oscars. Another 102 wins &amp; 86 nominations.\" poster=\"\" metascore=\"95\" imdbRating=\"7.8\" imdbVotes=\"335,226\" imdbID=\"tt1285016\" type=\"movie\"/></root>";
+//	String response = "<root response=\"True\"><movie title=\"The Social Network\" year=\"2010\" rated=\"PG-13\" released=\"01 Oct 2010\" runtime=\"120 min\" genre=\"Biography, Drama\" director=\"David Fincher\" writer=\"Aaron Sorkin (screenplay), Ben Mezrich (book)\" actors=\"Jesse Eisenberg, Rooney Mara, Bryan Barter, Dustin Fitzsimons\" plot=\"Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, but is later sued by two brothers who claimed he stole their idea, and the cofounder who was later squeezed out of the business.\" language=\"English, French\" country=\"USA\" awards=\"Won 3 Oscars. Another 102 wins &amp; 86 nominations.\" poster=\"\" metascore=\"95\" imdbRating=\"7.8\" imdbVotes=\"335,226\" imdbID=\"tt1285016\" type=\"movie\"/></root>";
 
 	if (response != null)
 	    return buildVideoFromIdResponse(response);

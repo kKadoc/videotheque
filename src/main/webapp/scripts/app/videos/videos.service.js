@@ -15,7 +15,14 @@ angular.module('videothequeApp')
     		$http({
     		    url: 'api/guess', 
     		    method: "POST",
-    		    data: { f: 'filename' }
+    		    data: { f: filename },
+    		    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    		    transformRequest: function(obj) {
+    		      var str = [];
+    		      for(var p in obj)
+    		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    		      return str.join("&");
+    		    }
     		 }).success(callback);
     	};
     	

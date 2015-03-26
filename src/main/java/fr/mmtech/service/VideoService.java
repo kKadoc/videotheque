@@ -87,9 +87,10 @@ public class VideoService {
 	    String[] words = fileName.split(" ");
 	    finalKeyword = "";
 	    for (String w : words) {
-		if (w.length() > finalKeyword.length())
-		    finalKeyword = w;
-	    }
+			if (w.length() > finalKeyword.length()) {
+			    finalKeyword = w;
+		    }
+		}
 	} else {
 	    finalKeyword = keyword;
 	}

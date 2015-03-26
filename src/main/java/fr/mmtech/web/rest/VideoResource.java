@@ -133,11 +133,11 @@ public class VideoResource {
     }
 
     /**
-     * GET /guess/:filename -> guess the title from the "filename".
+     * POST /guess -> guess the title from the "filename".
      */
     @RequestMapping(value = "/guess", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GuessDTO> guess(@RequestBody String fileName) {
+    public List<GuessDTO> guess(@RequestParam(value = "f") String fileName) {
 	log.debug("REST request to guess File : {}", fileName);
 	try {
 	    return videoService.guess(fileName, null);

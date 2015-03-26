@@ -125,7 +125,7 @@ angular.module('videothequeApp')
             
             //on tente de deviner le film
             $scope.listGuess = null;
-            VideoService.guess(file.name, function (data) {
+            VideoService.guess($scope.videoFile.name, function (data) {
                 $scope.listGuess = data;
             });
             
@@ -147,7 +147,7 @@ angular.module('videothequeApp')
 
             var xhr = new XMLHttpRequest();
             
-            xhr.upload.addEventListener("progress", uploadProgress, false);
+            xhr.addEventListener("load", uploadComplete, false);
             xhr.addEventListener("error", uploadFailed, false);
             xhr.addEventListener("abort", uploadCanceled, false);
             xhr.open("POST", "/api/uploadVideo");
