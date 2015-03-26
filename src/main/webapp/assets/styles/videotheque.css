@@ -1,3 +1,9 @@
+@media (min-width: 1200px) {
+  .container {
+    width: 90%;
+  }
+}
+
 #createVideoPanel label {
 	display : inline-block;
 	width : 150px;
@@ -13,19 +19,6 @@
 	margin : 3px 0;
 	cursor : pointer;
 }
-
-.percent {
-    position: absolute; width: 300px; height: 14px; z-index: 1; text-align: center; font-size: 0.8em; color: white;
-}
-
-.progress-bar {
-    width: 300px; height: 14px;
-    border-radius: 10px;
-    border: 1px solid #CCC;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#6666cc), to(#4b4b95));
-    border-image: initial;
-}
-
 
 .drop-over {
 	background : red;
@@ -72,6 +65,10 @@
 	color : #F6C500;
 }
 
+.play-icon:hover {
+	color : red;
+}
+
 
 /** STYLE LIST */
 .videos.list .video {
@@ -113,16 +110,16 @@
 	width : 80px;
 }
 
+.videos.list .video .type {
+	margin-left : 20px;
+}
+
 .videos.list .play-icon {
 	position : absolute;
 	right :  40px;
 	top : 6px;
 	font-size : 1.4em;
 	cursor : pointer;
-}
-
-.videos.list .play-icon:hover {
-	color : red;
 }
 
 .videos.list .star-icon {
@@ -235,15 +232,45 @@
 	
 	overflow : hidden;
 	padding : 0;
+	
+	position : relative;
 }
 
 .videos.poster .cover {
 	width : 100%;
 	height : 100%;
+	
+	z-index : 1;
+	position : absolute;
 }
 
 .videos.poster .content {
+	position : absolute;
+	width : 100%;
+	height : 30%;
+	z-index : 2;
+	
 	display : none;
+	
+	bottom : 0;
+	
+	background : rgba(255,255,255,0.8);
+}
+
+.videos.poster .video:hover .content {
+	display: block;
+}
+
+.videos.poster .content p, .videos.poster .content i, .videos.poster .content h4 {
+	display : none;
+}
+
+.videos.poster .content .play-icon {
+	display : block;
+	font-size : 4em;
+	text-align : center;
+	margin-top : 20px;
+	cursor : pointer;
 }
 
 .videos.poster .star-icon {

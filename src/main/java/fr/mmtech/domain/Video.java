@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,7 +49,7 @@ public class Video implements Serializable {
     @Column(name = "year")
     private Integer year;
 
-    @Column(name = "rate", precision=10, scale=2)
+    @Column(name = "rate", precision = 10, scale = 2)
     private BigDecimal rate;
 
     @Column(name = "duration")
@@ -63,152 +64,144 @@ public class Video implements Serializable {
     @Column(name = "add_date")
     private DateTime addDate;
 
-    @ManyToMany
-    @JoinTable(name = "T_VIDEO_VIDEOTYPE",
-               joinColumns = @JoinColumn(name="videos_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="videoTypes_id", referencedColumnName="ID"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "T_VIDEO_VIDEOTYPE", joinColumns = @JoinColumn(name = "videos_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "videoTypes_id", referencedColumnName = "ID"))
+    @Cascade({ CascadeType.PERSIST, CascadeType.SAVE_UPDATE })
     private Set<VideoType> videoTypes = new HashSet<>();
 
     @OneToOne
-    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @Cascade({ CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     private File videoFile;
 
     @OneToOne
-    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @Cascade({ CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     private File imgFile;
 
     @OneToOne
-    @Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @Cascade({ CascadeType.PERSIST, CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     private File subFile;
 
     public Long getId() {
-        return id;
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public String getImdbId() {
-        return imdbId;
+	return imdbId;
     }
 
     public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
+	this.imdbId = imdbId;
     }
 
     public String getTitle() {
-        return title;
+	return title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+	this.title = title;
     }
 
     public Integer getYear() {
-        return year;
+	return year;
     }
 
     public void setYear(Integer year) {
-        this.year = year;
+	this.year = year;
     }
 
     public BigDecimal getRate() {
-        return rate;
+	return rate;
     }
 
     public void setRate(BigDecimal rate) {
-        this.rate = rate;
+	this.rate = rate;
     }
 
     public Integer getDuration() {
-        return duration;
+	return duration;
     }
 
     public void setDuration(Integer duration) {
-        this.duration = duration;
+	this.duration = duration;
     }
 
     public Boolean getFavoris() {
-        return favoris;
+	return favoris;
     }
 
     public void setFavoris(Boolean favoris) {
-        this.favoris = favoris;
+	this.favoris = favoris;
     }
 
     public DateTime getAddDate() {
-        return addDate;
+	return addDate;
     }
 
     public void setAddDate(DateTime addDate) {
-        this.addDate = addDate;
+	this.addDate = addDate;
     }
 
     public Set<VideoType> getVideoTypes() {
-        return videoTypes;
+	return videoTypes;
     }
 
     public void setVideoTypes(Set<VideoType> videoTypes) {
-        this.videoTypes = videoTypes;
+	this.videoTypes = videoTypes;
     }
 
     public File getVideoFile() {
-        return videoFile;
+	return videoFile;
     }
 
     public void setVideoFile(File file) {
-        this.videoFile = file;
+	this.videoFile = file;
     }
 
     public File getImgFile() {
-        return imgFile;
+	return imgFile;
     }
 
     public void setImgFile(File file) {
-        this.imgFile = file;
+	this.imgFile = file;
     }
 
     public File getSubFile() {
-        return subFile;
+	return subFile;
     }
 
     public void setSubFile(File file) {
-        this.subFile = file;
+	this.subFile = file;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	if (this == o) {
+	    return true;
+	}
+	if (o == null || getClass() != o.getClass()) {
+	    return false;
+	}
 
-        Video video = (Video) o;
+	Video video = (Video) o;
 
-        if ( ! Objects.equals(id, video.id)) return false;
+	if (!Objects.equals(id, video.id))
+	    return false;
 
-        return true;
+	return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+	return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return "Video{" +
-                "id=" + id +
-                ", imdbId='" + imdbId + "'" +
-                ", title='" + title + "'" +
-                ", year='" + year + "'" +
-                ", rate='" + rate + "'" +
-                ", duration='" + duration + "'" +
-                ", favoris='" + favoris + "'" +
-                ", addDate='" + addDate + "'" +
-                '}';
+	return "Video{" + "id=" + id + ", imdbId='" + imdbId + "'" + ", title='" + title + "'" + ", year='" + year + "'" + ", rate='" + rate + "'" + ", duration='" + duration + "'" + ", favoris='"
+		+ favoris + "'" + ", addDate='" + addDate + "'" + '}';
     }
 }

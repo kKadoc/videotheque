@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -24,9 +23,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import fr.mmtech.domain.File;
-import fr.mmtech.domain.Video;
 import fr.mmtech.web.rest.dto.GuessDTO;
+import fr.mmtech.web.rest.dto.VideoImdbDTO;
 
 public class IMDBUtil {
     // private Properties types;
@@ -66,14 +64,14 @@ public class IMDBUtil {
      * @return
      * @throws IMDBException
      */
-    public Video getVideo(Video video, String imdbId) throws Exception {
+    public VideoImdbDTO getVideo(String imdbId) throws Exception {
 	// String response = makeRequestFromId(imdbId);
 
 	// TODO bouchon
 	String response = "<root response=\"True\"><movie title=\"The Social Network\" year=\"2010\" rated=\"PG-13\" released=\"01 Oct 2010\" runtime=\"120 min\" genre=\"Biography, Drama\" director=\"David Fincher\" writer=\"Aaron Sorkin (screenplay), Ben Mezrich (book)\" actors=\"Jesse Eisenberg, Rooney Mara, Bryan Barter, Dustin Fitzsimons\" plot=\"Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, but is later sued by two brothers who claimed he stole their idea, and the cofounder who was later squeezed out of the business.\" language=\"English, French\" country=\"USA\" awards=\"Won 3 Oscars. Another 102 wins &amp; 86 nominations.\" poster=\"\" metascore=\"95\" imdbRating=\"7.8\" imdbVotes=\"335,226\" imdbID=\"tt1285016\" type=\"movie\"/></root>";
 
 	if (response != null)
-	    return buildVideoFromIdResponse(video, response);
+	    return buildVideoFromIdResponse(response);
 	else {
 	    logger.debug("No response from imdb");
 	    throw new Exception("Le service IMDB ne répond pas.");
@@ -205,8 +203,8 @@ public class IMDBUtil {
      * @param response
      * @return
      */
-    private Video buildVideoFromIdResponse(Video video, String response) {
-
+    private VideoImdbDTO buildVideoFromIdResponse(String response) {
+	VideoImdbDTO video = new VideoImdbDTO();
 	try {
 	    DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	    InputSource is = new InputSource();
@@ -219,12 +217,11 @@ public class IMDBUtil {
 		Element movie = (Element) nNode;
 
 		video.setTitle(movie.getAttribute("title"));
-		video.setYear(Integer.decode(movie.getAttribute("year")));
-		video.setDuration(buildDuration(movie.getAttribute("runtime")));
-		// video.setType(buildType(movie.getAttribute("genre")));
-		// TODO flag particulier ppour traiter cet état transitoire ?
-		video.setImgFile(new File(movie.getAttribute("poster"), File.IMG_FLAG));
-		video.setRate(buildRate(movie.getAttribute("imdbRating")));
+		video.setYear(movie.getAttribute("year"));
+		video.setDuration(movie.getAttribute("runtime"));
+		video.setType(movie.getAttribute("genre"));
+		video.setImg(movie.getAttribute("poster"));
+		video.setRate(movie.getAttribute("imdbRating"));
 		video.setImdbId(movie.getAttribute("imdbID"));
 		return video;
 	    }
@@ -308,55 +305,5 @@ public class IMDBUtil {
 	}
 
 	return list;
-    }
-
-    // private String buildType(String str) {
-    // String[] all = str.split(", ");
-    // String res = "";
-    // boolean first = true;
-    // for (String s : all){
-    // String t = s.replace(" ", "");
-    // if (types.containsKey(s))
-    // t = types.getProperty(s);
-    // else {
-    // logger.error("MISSING TYPE "+s);
-    // }
-    //
-    // if (first) {
-    // res = t;
-    // first = false;
-    // }
-    // else {
-    // res += ", "+t;
-    // }
-    // }
-    // return res;
-    // }
-
-    /**
-     * Parse la durée (string) pour la convertir en entier
-     * 
-     * @param str
-     * @return
-     */
-    private Integer buildDuration(String str) {
-	// on vire tous les charactères
-	str = str.replaceAll("\\D", "");
-	Integer res = Integer.decode(str);
-	return res;
-    }
-
-    /**
-     * Parse la notation (string) pour la convertir en BigDecimal
-     * 
-     * @param str
-     * @return
-     */
-    private BigDecimal buildRate(String str) {
-	try {
-	    return new BigDecimal(str);
-	} catch (Exception e) {
-	    return BigDecimal.ZERO;
-	}
     }
 }

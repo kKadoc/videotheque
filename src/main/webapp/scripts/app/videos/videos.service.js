@@ -12,11 +12,17 @@ angular.module('videothequeApp')
     	};
     	
     	service.guess = function(filename, callback){
-    		console.log(filename);
     		$http({
     		    url: 'api/guess', 
     		    method: "POST",
     		    data: { f: 'filename' }
+    		 }).success(callback);
+    	};
+    	
+    	service.refreshFromImdb = function(id, callback){
+    		$http({
+    		    url: 'api/refreshImdb/' + id, 
+    		    method: "GET"
     		 }).success(callback);
     	};
     	return service;

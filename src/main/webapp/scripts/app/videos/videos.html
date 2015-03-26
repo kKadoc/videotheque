@@ -60,6 +60,11 @@
 				<button type="button" class="btn btn-default" ng-click="orderBy('rate')" ng-class="{active: orderField == 'rate'}">Note</button>
 			</div>
 			
+			<select class="form-control">
+				<option>Tous les genres</option>
+				<option ng-repeat="type in types">{{type.name}}</option>
+			</select>
+			
 			<div class="btn-group right" role="group" aria-label="...">
 				<button type="button" class="btn btn-default" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"><i class="mdi mdi-view-list"></i></button>
 				<button type="button" disabled class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-headline"></i></button>
@@ -77,7 +82,7 @@
 			<p class="duration">{{displayDuration(video.duration)}}</p>
 			<p class="addDate">{{displayDate(video.addDate)}}</p>
 			<i class="rate" ng-class="displayRate(video.rate)"></i>
-			
+			<p class="type"><span ng-repeat="type in video.videoTypes">{{type.name}}{{$last ? '' : ', '}}</span></p>
 			<i class="play-icon mdi mdi-play-box-outline" ng-click="play(video.id)"></i>
 		</div>
 	</div>

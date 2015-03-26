@@ -1,10 +1,14 @@
 package fr.mmtech.domain;
 
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * A File.
@@ -13,10 +17,10 @@ import java.util.Objects;
 @Table(name = "T_FILE")
 public class File implements Serializable {
 
-	public static final String IMG_FLAG = "IMG";
-	public static final String VIDEO_FLAG = "VIDEO";
-	public static final String SUBS_FLAG = "SUBS";
-	
+    public static final String IMG_FLAG = "IMG";
+    public static final String VIDEO_FLAG = "VIDEO";
+    public static final String SUBS_FLAG = "SUBS";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -28,64 +32,61 @@ public class File implements Serializable {
     private String type;
 
     public File(String path, String type) {
-		this.path = path;
-		this.type = type;
-	}
+	this.path = path;
+	this.type = type;
+    }
 
-	public File() {
-	}
+    public File() {
+    }
 
-	public Long getId() {
-        return id;
+    public Long getId() {
+	return id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+	this.id = id;
     }
 
     public String getPath() {
-        return path;
+	return path;
     }
 
     public void setPath(String path) {
-        this.path = path;
+	this.path = path;
     }
 
     public String getType() {
-        return type;
+	return type;
     }
 
     public void setType(String type) {
-        this.type = type;
+	this.type = type;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	if (this == o) {
+	    return true;
+	}
+	if (o == null || getClass() != o.getClass()) {
+	    return false;
+	}
 
-        File file = (File) o;
+	File file = (File) o;
 
-        if ( ! Objects.equals(id, file.id)) return false;
+	if (!Objects.equals(id, file.id))
+	    return false;
 
-        return true;
+	return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+	return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return "File{" +
-                "id=" + id +
-                ", path='" + path + "'" +
-                ", type='" + type + "'" +
-                '}';
+	return "File{" + "id=" + id + ", path='" + path + "'" + ", type='" + type + "'" + '}';
     }
 }

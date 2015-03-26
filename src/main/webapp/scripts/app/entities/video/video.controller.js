@@ -1,26 +1,18 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideoController', function ($scope, Video, VideoType, File, ParseLinks) {
+    .controller('VideoController', function ($scope, Video, VideoService, VideoType, File, ParseLinks) {
         $scope.videos = [];
         $scope.videotypes = VideoType.query();
         $scope.files = File.query();
-        $scope.page = 1;
+
         $scope.loadAll = function() {
-            Video.query({page: $scope.page, per_page: 20}, function(result, headers) {
-                $scope.links = ParseLinks.parse(headers('link'));
-                for (var i = 0; i < result.length; i++) {
-                    $scope.videos.push(result[i]);
-                }
+            Video.query(function(result) {
+            	$scope.videos = result;
             });
         };
         $scope.reset = function() {
-            $scope.page = 1;
             $scope.videos = [];
-            $scope.loadAll();
-        };
-        $scope.loadPage = function(page) {
-            $scope.page = page;
             $scope.loadAll();
         };
         $scope.loadAll();
@@ -38,6 +30,12 @@ angular.module('videothequeApp')
             Video.get({id: id}, function(result) {
                 $scope.video = result;
                 $('#saveVideoModal').modal('show');
+            });
+        };
+        
+        $scope.refreshFromImdb = function (id) {
+        	VideoService.refreshFromImdb(id, function(result) {
+                $scope.reset();
             });
         };
 

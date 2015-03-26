@@ -9,8 +9,6 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +26,6 @@ import fr.mmtech.domain.Video;
 import fr.mmtech.repository.VideoRepository;
 import fr.mmtech.service.VideoService;
 import fr.mmtech.web.rest.dto.GuessDTO;
-import fr.mmtech.web.rest.util.PaginationUtil;
 
 /**
  * REST controller for managing Video.
@@ -78,11 +75,9 @@ public class VideoResource {
      */
     @RequestMapping(value = "/videos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Video>> getAll(@RequestParam(value = "page", required = false) Integer offset, @RequestParam(value = "per_page", required = false) Integer limit)
-	    throws URISyntaxException {
-	Page<Video> page = videoRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-	HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/videos", offset, limit);
-	return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<Video> getAll() throws URISyntaxException {
+	log.debug("REST request to get all Videos : {}");
+	return videoRepository.findAll();
     }
 
     /**
@@ -110,9 +105,31 @@ public class VideoResource {
      */
     @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public void play(@PathVariable Long id) {
+    public String play(@PathVariable Long id) {
 	log.debug("REST request to play Video : {}", id);
-	videoService.play(id);
+	try {
+	    videoService.play(id);
+	} catch (Exception e) {
+	    log.error("Error lors de la mise à jour de la vidéo", e);
+	    return e.getMessage();
+	}
+	return null;
+    }
+
+    /**
+     * GET /refreshImdb/:id -> reload dat from imdb for the "id" video.
+     */
+    @RequestMapping(value = "/refreshImdb/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public String refreshImdb(@PathVariable Long id) {
+	log.debug("REST request to refreshImdb Video : {}", id);
+	try {
+	    videoService.refreshImdb(id);
+	} catch (Exception e) {
+	    log.error("Error lors de la mise à jour de la vidéo", e);
+	    return e.getMessage();
+	}
+	return null;
     }
 
     /**
@@ -122,8 +139,13 @@ public class VideoResource {
     @Timed
     public List<GuessDTO> guess(@RequestBody String fileName) {
 	log.debug("REST request to guess File : {}", fileName);
+	try {
+	    return videoService.guess(fileName, null);
+	} catch (Exception e) {
+	    log.error("Error lors de la mise à jour de la vidéo", e);
+	    return null;
+	}
 
-	return videoService.guess(fileName, null);
     }
 
     /**

@@ -1,13 +1,15 @@
 package fr.mmtech.repository;
 
-import fr.mmtech.domain.VideoType;
-import org.springframework.data.jpa.repository.*;
+import java.util.Optional;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import fr.mmtech.domain.VideoType;
 
 /**
  * Spring Data JPA repository for the VideoType entity.
  */
-public interface VideoTypeRepository extends JpaRepository<VideoType,Long> {
+public interface VideoTypeRepository extends JpaRepository<VideoType, Long> {
 
+    Optional<VideoType> findOneByName(String name);
 }

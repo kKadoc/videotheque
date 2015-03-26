@@ -125,7 +125,7 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+            <tbody>
                 <tr ng-repeat="video in videos">
                     <td><a ui-sref="videoDetail({id:video.id})">{{video.id}}</a></td>
                     <td>{{video.imdbId}}</td>
@@ -139,17 +139,22 @@
                         <button type="submit"
                                 ui-sref="videoDetail({id:video.id})"
                                 class="btn btn-info">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                            <span class="glyphicon glyphicon-eye-open"></span>
                         </button>
                         <button type="submit"
                                 ng-click="update(video.id)"
                                 class="btn btn-primary">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="submit"
+                                ng-click="refreshFromImdb(video.id)"
+                                class="btn btn-primary">
+                            <span class="glyphicon glyphicon-refresh"></span>
                         </button>
                         <button type="submit"
                                 ng-click="delete(video.id)"
                                 class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                            <span class="glyphicon glyphicon-remove-circle"></span>
                         </button>
                     </td>
                 </tr>

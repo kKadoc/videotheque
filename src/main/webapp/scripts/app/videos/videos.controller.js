@@ -1,11 +1,20 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideosController', function ($scope, $cookies, $browser, localStorageService, Video, VideoService) {
+    .controller('VideosController', function ($scope, $cookies, $browser, localStorageService, Video, VideoType, VideoService) {
     	
     	var videoExt = ["mp4", "divx", "avi", "mov", "mpg"];
     	var subExt = ["srt"];
     	
+    	//récupération des types de vidéo
+    	$scope.types = [];
+    	$scope.refreshTypesList = function() {
+    		VideoType.query(function(result) {
+               $scope.types = result;
+            });
+        };
+        $scope.refreshTypesList();
+        
     	// récupération de la liste
     	$scope.videos = [];
     	$scope.refreshVideosList = function() {
@@ -123,7 +132,8 @@ angular.module('videothequeApp')
             //on affiche le module de creation
             $('#createVideoPanel').modal('show');
         };
-           
+          
+        //upload des fichiers et création de la vidéo
         $scope.createVideo = function(imdbId) {
         	var csrfValue = $browser.cookies()["CSRF-TOKEN"];
         	
@@ -138,29 +148,26 @@ angular.module('videothequeApp')
             var xhr = new XMLHttpRequest();
             
             xhr.upload.addEventListener("progress", uploadProgress, false);
-            xhr.addEventListener("load", uploadComplete, false);
             xhr.addEventListener("error", uploadFailed, false);
             xhr.addEventListener("abort", uploadCanceled, false);
             xhr.open("POST", "/api/uploadVideo");
-            $scope.progressVisible = true;
             xhr.send(fd);
             
             return false;
         };
 
-        function uploadProgress(evt) {
-            $scope.$apply(function(){
-                if (evt.lengthComputable) {
-                    $scope.progress = Math.round(evt.loaded * 100 / evt.total);
-                } else {
-                    $scope.progress = 'unable to compute';
-                }
-            })
-        };
-
         function uploadComplete(evt) {
             /* This event is raised when the server send back a response */
             alert(evt.target.responseText);
+            
+            $scope.refreshVideosList();
+            
+            $scope.videoFile = null;
+            $scope.subFile = null;
+            $scope.listGuess = null;
+            
+            $('#createVideoPanel').modal('hide');
+            
         };
 
         function uploadFailed(evt) {
@@ -168,9 +175,6 @@ angular.module('videothequeApp')
         };
 
         function uploadCanceled(evt) {
-            $scope.$apply(function(){
-                $scope.progressVisible = false;
-            })
             alert("The upload has been canceled by the user or the browser dropped the connection.");
         };
     });
