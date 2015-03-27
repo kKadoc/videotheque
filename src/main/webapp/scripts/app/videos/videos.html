@@ -10,11 +10,16 @@
 	            <div class="modal-body">
 	            	<div class="form-group">
 	            		<label>Fichier vidéo</label>
-	            		<input type="text" class="form-control" value="{{videoFile.name}}" readonly>
+	            		<input type="text" class="form-control" ng-model="videoFile" on-enter="updateKeyword(); guess()">
 	            	</div>
 	            	<div class="form-group">
 	            		<label>Fichier sous-titre</label>
-	            		<input type="text" class="form-control" value="{{subFile.name}}" readonly>
+	            		<input type="text" class="form-control" ng-model="subFile" >
+	            	</div>
+	            	
+	            	<div class="form-group">
+	            		<label>Mot clé pour la recherche IMDB</label>
+	            		<input type="text" class="form-control" ng-model="keyword" ng-change="customKeyword = true" on-enter="guess()">
 	            	</div>
 	            	
 					<div class="panel panel-default">
@@ -25,15 +30,15 @@
 							<a ng-repeat="guess in listGuess" ng-click="createVideo(guess.imdbId)">
 			                	<b>{{guess.title}}</b> <span>({{guess.year}})</span> <span>type : {{guess.type}}</span>
 			                </a>
+			                
+			                <div id="use-id" class="form-group">
+			            		<label>Ou utiliser cet id :</label>
+			            		<input type="text" class="form-control small" ng-model="imdbId" on-enter="useImdbId()">
+			            		<button type="submit" ng-click="useImdbId()" class="btn btn-default"><i class="mdi mdi-checkbox-marked-circle"></i></button>
+	            			</div>
 						</div>
 					</div>
-					
-					<div ng-show="progressVisible">
-			            <div class="percent">{{progress}}%</div>
-			            <div class="progress-bar">
-			                <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
-			            </div>
-			        </div>
+
 	            </div>
 	            <div class="modal-footer">
 	                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
@@ -44,11 +49,12 @@
 	    </div>
 	</div>
 </div>
-    
-<div ng-cloak id="videos-container" class="videos" ng-class="display" droppable>
+   
+<i id="add-video" class="mdi mdi-library-plus" ng-click="showCreateModal()"></i>
+<div ng-cloak id="videos-container" class="videos" ng-class="display">       
 	<div class="display">
 		<form class="form-inline">
-			<input ng-model="filter" type="text" placeholder="Filtrer par" autofocus>
+			<input ng-model="filterName" type="text" placeholder="Filtrer par" autofocus>
 		
 			<label>Trier par</label>
 			<div class="btn-group" role="group" aria-label="...">
@@ -60,9 +66,9 @@
 				<button type="button" class="btn btn-default" ng-click="orderBy('rate')" ng-class="{active: orderField == 'rate'}">Note</button>
 			</div>
 			
-			<select class="form-control">
-				<option>Tous les genres</option>
-				<option ng-repeat="type in types">{{type.name}}</option>
+			<select class="form-control" ng-model="filterType">
+				<option value="">Tous les genres</option>
+				<option ng-repeat="type in types" value="{{type.name}}">{{type.name}}</option>
 			</select>
 			
 			<div class="btn-group right" role="group" aria-label="...">
@@ -73,8 +79,8 @@
 		</form>
 	</div>
 	
-	<div ng-class="{favoris: video.favoris}" class="video" ng-repeat="video in videos | filter:filter | orderBy: orderField : reverseOrder">
-		<i class="star-icon mdi mdi-star-outline"></i>
+	<div ng-class="{favoris: video.favoris}" class="video" ng-repeat="video in videos | filter:filterFunction | orderBy: orderField : reverseOrder">
+		<i class="star-icon mdi mdi-star-outline" ng-click="toggleFav(video)"></i>
 		<img class="cover" ng-src="/cover/{{video.imgFile.path}}" />
 		<div class="content">
 			<h4>{{video.title}}</h4>

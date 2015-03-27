@@ -77,6 +77,27 @@ angular.module('videothequeApp')
         	return res;
         };
         
+        //gestion du filtre
+        $scope.filterFunction = function(element) {
+        	if ($scope.filterName != null && $scope.filterName != ""){
+        		var fN = $scope.filterName.toLowerCase();
+        		if (element.title.toLowerCase().indexOf(fN) === -1) {
+        			return false;
+        		}
+        	}
+        	
+        	if ($scope.filterType != null && $scope.filterType != ""){
+        		for (var i = 0; i < element.videoTypes.length; i++) {
+        	        if (element.videoTypes[i].name === $scope.filterType) {
+        	            return true;
+        	        }
+        	    }
+        		
+        		return false;
+        	}
+    		return true;
+    	};
+        	
         // gestion du tri
         $scope.orderField = "title";
         $scope.reverseOrder = false;
@@ -96,85 +117,68 @@ angular.module('videothequeApp')
         	VideoService.play(id);
         };
         
-        $scope.videoFile;
-        $scope.subFile;
         //affichage de la création d'une video
-        $scope.dropFiles = function (fileList) {
+        $scope.showCreateModal = function () {
         	
-        	//on identifie les fichiers à importer
         	$scope.videoFile = null;
             $scope.subFile = null;
-            
-            var i = 0;
-            for (i = 0; i < fileList.length; i++) {
-            	var file = fileList[i];
-            	
-            	var ext = file.name.substr(file.name.lastIndexOf('.') + 1);
-            	if ($scope.videoFile == null && videoExt.indexOf(ext) != -1) {
-            		$scope.videoFile = file;
-            	}
-            	if ($scope.subFile == null && subExt.indexOf(ext) != -1) {
-            		$scope.subFile = file;
-            	}
-            }
-            
-            if ($scope.videoFile == null) {
-            	alert("Aucun fichier vidéo exploitable n'a été trouvé");
-            	return;
-            }
-            
-            //on tente de deviner le film
+            $scope.keyword = null;
             $scope.listGuess = null;
-            VideoService.guess($scope.videoFile.name, function (data) {
-                $scope.listGuess = data;
-            });
+            $scope.customKeyword = false;
+            
             
             //on affiche le module de creation
             $('#createVideoPanel').modal('show');
         };
+        
+        //mise à jour du mot clé de recherche imdb
+        $scope.updateKeyword = function() {
+        	$scope.keyword = $scope.videoFile;
+        	//on vire le dossier
+        	if ($scope.videoFile != null && $scope.videoFile != "" && $scope.videoFile.indexOf("/") != -1) {
+        		$scope.keyword = $scope.videoFile.substr($scope.videoFile.lastIndexOf("/")+1) ;
+        	}
+        	if ($scope.videoFile != null && $scope.videoFile != "" && $scope.videoFile.indexOf("\\") != -1) {
+        		$scope.keyword = $scope.videoFile.substr($scope.videoFile.lastIndexOf("\\")+1) ;
+        	}
+        	//on vire l'extension
+        	if ($scope.keyword != null && $scope.keyword != "" && $scope.keyword.indexOf(".") != -1) {
+        		$scope.keyword = $scope.keyword.substr(0, $scope.keyword.lastIndexOf(".")) ;
+        	}
+        	
+        	$scope.customKeyword = false;
+        	
+        };
+        
+        //tente de deviner la vidéo d'apres le mot clé
+        $scope.guess = function() {
+        	console.log($scope.customKeyword);
+        	if ($scope.keyword != null && $scope.keyword != "") {
+	        	VideoService.guess($scope.keyword, $scope.customKeyword, function (data) {
+	                $scope.listGuess = data;
+	            });
+	        }
+        };
           
         //upload des fichiers et création de la vidéo
-        $scope.createVideo = function(imdbId) {
-        	var csrfValue = $browser.cookies()["CSRF-TOKEN"];
-        	
-            var fd = new FormData();
-            fd.append("videoFile", $scope.videoFile);
-            if ($scope.subFile != null) {
-            	fd.append("subFile", $scope.subFile);
-            }
-            fd.append("_csrf", csrfValue);
-            fd.append("imdbId", imdbId);
-
-            var xhr = new XMLHttpRequest();
-            
-            xhr.addEventListener("load", uploadComplete, false);
-            xhr.addEventListener("error", uploadFailed, false);
-            xhr.addEventListener("abort", uploadCanceled, false);
-            xhr.open("POST", "/api/uploadVideo");
-            xhr.send(fd);
-            
-            return false;
+        $scope.createVideo = function(imdbId) {    	
+        	VideoService.createVideo($scope.videoFile, $scope.subFile, imdbId, function (data) {
+        		if (data != null) {
+        			alert(data);
+        		}
+        		$scope.refreshVideosList();
+        		
+        		$('#createVideoPanel').modal('hide');
+            });
         };
+        
+        $scope.useImdbId = function() {
+        	$scope.createVideo($scope.imdbId);
+        }
+        
+       $scope.toggleFav = function(video) {
+		   video.favoris = !video.favoris;
+		   Video.update(video, function () {});
+       }
 
-        function uploadComplete(evt) {
-            /* This event is raised when the server send back a response */
-            alert(evt.target.responseText);
-            
-            $scope.refreshVideosList();
-            
-            $scope.videoFile = null;
-            $scope.subFile = null;
-            $scope.listGuess = null;
-            
-            $('#createVideoPanel').modal('hide');
-            
-        };
-
-        function uploadFailed(evt) {
-            alert("There was an error attempting to upload the file.");
-        };
-
-        function uploadCanceled(evt) {
-            alert("The upload has been canceled by the user or the browser dropped the connection.");
-        };
     });

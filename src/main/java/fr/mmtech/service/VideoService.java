@@ -6,6 +6,13 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import fr.mmtech.domain.File;
 import fr.mmtech.domain.Video;
@@ -87,10 +93,10 @@ public class VideoService {
 	    String[] words = fileName.split(" ");
 	    finalKeyword = "";
 	    for (String w : words) {
-			if (w.length() > finalKeyword.length()) {
-			    finalKeyword = w;
-		    }
+		if (w.length() > finalKeyword.length()) {
+		    finalKeyword = w;
 		}
+	    }
 	} else {
 	    finalKeyword = keyword;
 	}
@@ -112,7 +118,7 @@ public class VideoService {
      * @throws Exception
      * @throws IOException
      */
-    public String createVideo(MultipartFile dlVideoFile, MultipartFile dlSubFile, String imdbId) throws IOException, Exception {
+    public String createVideo(String oldMovieFileName, String oldSubFileName, String imdbId) throws IOException, Exception {
 	String msg = "";
 
 	Video video = new Video();
@@ -153,33 +159,27 @@ public class VideoService {
 	}
 
 	// on déplace et renome le fichier vidéo
-	String newMovieFileName = dirName + java.io.File.separatorChar + title + dlVideoFile.getOriginalFilename().substring(dlVideoFile.getOriginalFilename().lastIndexOf("."));
+	String newMovieFileName = dirName + java.io.File.separatorChar + title + oldMovieFileName.substring(oldMovieFileName.lastIndexOf("."));
 	log.debug("newMovieFileName : " + newMovieFileName);
-	java.io.File movieFile = new java.io.File(basePath + newMovieFileName);
-	if (!movieFile.createNewFile()) {
+	java.io.File oldMovieFile = new java.io.File(oldMovieFileName);
+	java.io.File newMovieFile = new java.io.File(basePath + newMovieFileName);
+	if (!oldMovieFile.renameTo(newMovieFile)) {
 	    throw new Exception("Impossible de créer le fichier vidéo de " + newMovieFileName + ". Création annulée.");
 	}
-
-	FileOutputStream fos = new FileOutputStream(movieFile);
-	fos.write(dlVideoFile.getBytes());
-	fos.close();
 
 	// on associe le fichier à la vidéo
 	video.setVideoFile(new File(newMovieFileName, File.VIDEO_FLAG));
 
-	if (dlSubFile != null) {
+	if (oldSubFileName != null && !oldSubFileName.isEmpty()) {
 	    // on récupère e fichier sous titres
-	    String newSubFileName = dirName + java.io.File.separatorChar + title + dlSubFile.getOriginalFilename().substring(dlSubFile.getOriginalFilename().lastIndexOf("."));
+	    String newSubFileName = dirName + java.io.File.separatorChar + title + oldSubFileName.substring(oldSubFileName.lastIndexOf("."));
 	    log.debug("newSubFileName : " + newSubFileName);
-	    java.io.File subFile = new java.io.File(basePath + newSubFileName);
-	    if (!subFile.createNewFile()) {
+	    java.io.File oldSubFile = new java.io.File(oldSubFileName);
+	    java.io.File newSubFile = new java.io.File(basePath + newSubFileName);
+	    if (!oldSubFile.renameTo(newSubFile)) {
 		log.error("Impossible de créer le fichier de sous-titres de " + newSubFileName + ".");
 		msg += "Impossible de créer le fichier de sous-titres de " + newSubFileName + ".<br />";
 	    }
-
-	    fos = new FileOutputStream(subFile);
-	    fos.write(dlSubFile.getBytes());
-	    fos.close();
 
 	    // on associe le fichier à la vidéo
 	    video.setSubFile(new File(newSubFileName, File.SUBS_FLAG));
@@ -389,4 +389,40 @@ public class VideoService {
 
 	return set;
     }
+
+    /**
+     * Parcourt tous les fichiers de la vidéothèque Déplace les fichiers non
+     * référencés dans un répertoire de stockage Supprime les répertoires vides
+     * 
+     * @throws IOException
+     */
+    public void clearAppDir() throws IOException {
+	String dir = configRepository.getPath();
+	String garbage = configRepository.getGarbagePath();
+
+	FileVisitor<Path> fileProcessor = new ProcessFile();
+	Files.walkFileTree(Paths.get(dir), fileProcessor);
+
+    }
+
+    private static final class ProcessFile extends SimpleFileVisitor<Path> {
+	@Override
+	public FileVisitResult visitFile(Path aFile, BasicFileAttributes aAttrs) throws IOException {
+	    System.out.println("Processing file:" + aFile);
+	    return FileVisitResult.CONTINUE;
+	}
+
+	@Override
+	public FileVisitResult preVisitDirectory(Path aDir, BasicFileAttributes aAttrs) throws IOException {
+	    System.out.println("Pre Processing directory:" + aDir);
+	    return FileVisitResult.CONTINUE;
+	}
+
+	@Override
+	public FileVisitResult postVisitDirectory(Path aDir, IOException exc) throws IOException {
+	    System.out.println("Post Processing directory:" + aDir);
+	    return FileVisitResult.CONTINUE;
+	}
+    }
+
 }

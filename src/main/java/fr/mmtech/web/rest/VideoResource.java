@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -103,7 +102,7 @@ public class VideoResource {
     /**
      * GET /play/:id -> play the "id" video.
      */
-    @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
     public String play(@PathVariable Long id) {
 	log.debug("REST request to play Video : {}", id);
@@ -119,48 +118,62 @@ public class VideoResource {
     /**
      * GET /refreshImdb/:id -> reload dat from imdb for the "id" video.
      */
-    @RequestMapping(value = "/refreshImdb/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/refreshImdb/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public String refreshImdb(@PathVariable Long id) {
+    public ResponseEntity<String> refreshImdb(@PathVariable Long id) {
 	log.debug("REST request to refreshImdb Video : {}", id);
 	try {
 	    videoService.refreshImdb(id);
 	} catch (Exception e) {
 	    log.error("Error lors de la mise à jour de la vidéo", e);
-	    return e.getMessage();
+	    return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	return null;
+	return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     /**
      * POST /guess -> guess the title from the "filename".
+     * 
+     * @throws Exception
      */
     @RequestMapping(value = "/guess", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GuessDTO> guess(@RequestParam(value = "f") String fileName) {
-	log.debug("REST request to guess File : {}", fileName);
-	try {
-	    return videoService.guess(fileName, null);
-	} catch (Exception e) {
-	    log.error("Error lors de la mise à jour de la vidéo", e);
-	    return null;
-	}
+    public List<GuessDTO> guess(@RequestParam(value = "f", required = false) String fileName, @RequestParam(value = "k", required = false) String keyword) throws Exception {
+	log.debug("REST request to guess File : {}", fileName, keyword);
 
+	return videoService.guess(fileName, keyword);
     }
 
     /**
      * POST /uploadVideo -> upload a video file with the imdbId associated.
      */
-    @RequestMapping(value = "/uploadVideo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/createVideo", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
-    public String uploadVideo(@RequestParam("videoFile") MultipartFile videoFile, @RequestParam(value = "subFile", required = false) MultipartFile subFile, @RequestParam("imdbId") String imdbId) {
+    public ResponseEntity<String> createVideo(@RequestParam("videoFile") String videoFile, @RequestParam(value = "subFile", required = false) String subFile, @RequestParam("imdbId") String imdbId) {
 	log.debug("REST request to uploadVideo : {}", videoFile, subFile, imdbId);
 
 	try {
-	    return videoService.createVideo(videoFile, subFile, imdbId);
+	    return new ResponseEntity<String>(videoService.createVideo(videoFile, subFile, imdbId), HttpStatus.OK);
 	} catch (Exception e) {
 	    log.error("Error lors de la creation de la vidéo", e);
-	    return e.getMessage();
+	    return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     }
+
+    /**
+     * GET /clearAppDir -> reload dat from imdb for the "id" video.
+     */
+    @RequestMapping(value = "/clearAppDir", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @Timed
+    public ResponseEntity<String> clearAppDir() {
+	log.debug("REST request to clearAppDir : {}");
+	try {
+	    videoService.clearAppDir();
+	} catch (Exception e) {
+	    log.error("Error lors du nettoyage du répertoire de la vidéothèque", e);
+	    return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
 }

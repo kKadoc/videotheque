@@ -11,11 +11,18 @@ angular.module('videothequeApp')
     		 });
     	};
     	
-    	service.guess = function(filename, callback){
+    	service.guess = function(keyword, useKeyword, callback){
+    		var data;
+    		if (useKeyword) {
+    			data = { k: keyword };
+    		}
+    		else {
+    			data = { f: keyword }
+    		}
     		$http({
     		    url: 'api/guess', 
     		    method: "POST",
-    		    data: { f: filename },
+    		    data: data,
     		    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     		    transformRequest: function(obj) {
     		      var str = [];
@@ -26,11 +33,36 @@ angular.module('videothequeApp')
     		 }).success(callback);
     	};
     	
+    	service.createVideo = function(videoFile, subFile, imdbId, callback){
+    		$http({
+    		    url: 'api/createVideo', 
+    		    method: "POST",
+    		    data: { videoFile: videoFile, subFile: subFile == null ? "" : subFile, imdbId: imdbId },
+    		    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    		    transformRequest: function(obj) {
+    		      var str = [];
+    		      for(var p in obj)
+    		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    		      return str.join("&");
+    		    }
+    		 }).success(callback)
+    		 .error(function(data){
+    			 alert(data);
+    		});
+    	};
+    	
     	service.refreshFromImdb = function(id, callback){
     		$http({
     		    url: 'api/refreshImdb/' + id, 
     		    method: "GET"
     		 }).success(callback);
     	};
+    	
+    	service.clearAppDir = function(callback) {
+    		$http({
+    		    url: 'api/clearAppDir', 
+    		    method: "GET"
+    		 }).success(callback);
+    	}
     	return service;
     });
