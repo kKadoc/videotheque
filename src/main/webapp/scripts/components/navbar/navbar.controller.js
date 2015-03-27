@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal) {
+    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal, VideoService) {
         $scope.isAuthenticated = Principal.isAuthenticated;
         $scope.isInRole = Principal.isInRole;
         $scope.$state = $state;
@@ -10,4 +10,8 @@ angular.module('videothequeApp')
             Auth.logout();
             $state.go('videos');
         };
+        
+        $scope.clearAppDir = function() {
+        	VideoService.clearAppDir();
+        }
     });
