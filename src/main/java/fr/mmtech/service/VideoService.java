@@ -6,13 +6,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +26,7 @@ import fr.mmtech.repository.ConfigFieldRepository;
 import fr.mmtech.repository.FileRepository;
 import fr.mmtech.repository.VideoRepository;
 import fr.mmtech.repository.VideoTypeRepository;
+import fr.mmtech.service.util.CleanerUtil;
 import fr.mmtech.service.util.IMDBUtil;
 import fr.mmtech.web.rest.dto.GuessDTO;
 import fr.mmtech.web.rest.dto.VideoImdbDTO;
@@ -400,29 +394,11 @@ public class VideoService {
 	String dir = configRepository.getPath();
 	String garbage = configRepository.getGarbagePath();
 
-	FileVisitor<Path> fileProcessor = new ProcessFile();
-	Files.walkFileTree(Paths.get(dir), fileProcessor);
+	log.debug("CLEAN START - - - - - - - - - - - - - - - - - - - - - - -");
+	CleanerUtil util = new CleanerUtil(dir, garbage, fileRepository);
+	util.clearAppDir();
+	log.debug("CLEAN ENDED - - - - - - - - - - - - - - - - - - - - - - -");
 
-    }
-
-    private static final class ProcessFile extends SimpleFileVisitor<Path> {
-	@Override
-	public FileVisitResult visitFile(Path aFile, BasicFileAttributes aAttrs) throws IOException {
-	    System.out.println("Processing file:" + aFile);
-	    return FileVisitResult.CONTINUE;
-	}
-
-	@Override
-	public FileVisitResult preVisitDirectory(Path aDir, BasicFileAttributes aAttrs) throws IOException {
-	    System.out.println("Pre Processing directory:" + aDir);
-	    return FileVisitResult.CONTINUE;
-	}
-
-	@Override
-	public FileVisitResult postVisitDirectory(Path aDir, IOException exc) throws IOException {
-	    System.out.println("Post Processing directory:" + aDir);
-	    return FileVisitResult.CONTINUE;
-	}
     }
 
 }
