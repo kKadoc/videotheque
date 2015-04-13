@@ -16,7 +16,7 @@ angular.module('videothequeApp')
         $scope.refreshTypesList();
         
     	// récupération de la liste
-    	$scope.videos = [];
+    	
     	$scope.refreshVideosList = function() {
     		Video.query(function(result) {
                $scope.videos = result;
@@ -180,5 +180,40 @@ angular.module('videothequeApp')
 		   video.favoris = !video.favoris;
 		   Video.update(video, function () {});
        }
+       
+       
+       
+       $scope.watchcount = function () { return getWatchCount($scope); };
+       
+       $scope.$watch('$viewContentLoaded', function() {
+    	    //console.profileEnd();
+    	    //console.log("done");
+    	  });
+       
+       function getWatchCount (scope, scopeHash) {
+    	    // default for scopeHash
+    	    if (scopeHash === undefined) {
+    	        scopeHash = {};
+    	    }
+    	    
+    	    // make sure scope is defined and we haven't already processed this scope
+    	    if (!scope || scopeHash[scope.$id] !== undefined) {
+    	        return 0;
+    	    }
+    	    
+    	    var watchCount = 0;
+    	    
+    	    if (scope.$$watchers) {
+    	        watchCount = scope.$$watchers.length;
+    	    }
+    	    scopeHash[scope.$id] = watchCount;
+    	    
+    	    // get the counts of children and sibling scopes
+    	    // we only need childHead and nextSibling (not childTail or prevSibling)
+    	    watchCount+= getWatchCount(scope.$$childHead, scopeHash);
+    	    watchCount+= getWatchCount(scope.$$nextSibling, scopeHash);
+
+    	    return watchCount;
+    	}
 
     });
