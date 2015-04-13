@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 
 import fr.mmtech.domain.Video;
+import fr.mmtech.repository.FileRepository;
 import fr.mmtech.repository.VideoRepository;
+import fr.mmtech.repository.VideoTypeRepository;
 import fr.mmtech.service.VideoService;
+import fr.mmtech.service.util.ReloadUtil;
 import fr.mmtech.web.rest.dto.GuessDTO;
 
 /**
@@ -37,6 +40,12 @@ public class VideoResource {
 
     @Inject
     private VideoRepository videoRepository;
+
+    // TODO DELETE
+    @Inject
+    private FileRepository fileRepository;
+    @Inject
+    private VideoTypeRepository typeRepository;
 
     @Inject
     private VideoService videoService;
@@ -176,4 +185,10 @@ public class VideoResource {
 	return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/reload", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public void reload() {
+	ReloadUtil r = new ReloadUtil(videoRepository, fileRepository, typeRepository);
+	r.go();
+    }
 }

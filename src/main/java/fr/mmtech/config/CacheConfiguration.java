@@ -1,21 +1,20 @@
 package fr.mmtech.config;
 
+import javax.annotation.PreDestroy;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.cache.support.NoOpCacheManager; 
-
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = {MetricsConfiguration.class, DatabaseConfiguration.class})
+@AutoConfigureAfter(value = { MetricsConfiguration.class, DatabaseConfiguration.class })
 @Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class CacheConfiguration {
 
@@ -25,13 +24,13 @@ public class CacheConfiguration {
 
     @PreDestroy
     public void destroy() {
-        log.info("Closing Cache Manager");
+	log.info("Closing Cache Manager");
     }
 
     @Bean
     public CacheManager cacheManager() {
-        log.debug("No cache");
-        cacheManager = new NoOpCacheManager();
-        return cacheManager;
+	log.debug("No cache");
+	cacheManager = new ConcurrentMapCacheManager("config");
+	return cacheManager;
     }
 }

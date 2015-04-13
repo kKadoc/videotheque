@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -20,207 +22,190 @@ import fr.mmtech.repository.ConfigFieldRepository;
 
 @SuppressWarnings("serial")
 public class CoverServlet extends HttpServlet {
-	
-	@Autowired
-	private ConfigFieldRepository configRepository;
-	
-	public static final String MAPPING_URL = "/cover";
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-			      config.getServletContext());
-	}
-	
-	public static interface LookupResult {
-		public void respondGet(HttpServletResponse resp) throws IOException;
+    @Autowired
+    private ConfigFieldRepository configRepository;
 
-		public void respondHead(HttpServletResponse resp);
+    public static final String MAPPING_URL = "/cover";
 
-		public long getLastModified();
-	}
+    private final Logger log = LoggerFactory.getLogger(CoverServlet.class);
 
-	public static class Error implements LookupResult {
-		protected final int statusCode;
-		protected final String message;
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+	super.init(config);
+	SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
 
-		public Error(int statusCode, String message) {
-			this.statusCode = statusCode;
-			this.message = message;
-		}
+    public static interface LookupResult {
+	public void respondGet(HttpServletResponse resp) throws IOException;
 
-		public long getLastModified() {
-			return -1;
-		}
+	public void respondHead(HttpServletResponse resp);
 
-		public void respondGet(HttpServletResponse resp) throws IOException {
-			resp.sendError(statusCode, message);
-		}
+	public long getLastModified();
+    }
 
-		public void respondHead(HttpServletResponse resp) {
-			throw new UnsupportedOperationException();
-		}
+    public static class Error implements LookupResult {
+	protected final int statusCode;
+	protected final String message;
+
+	public Error(int statusCode, String message) {
+	    this.statusCode = statusCode;
+	    this.message = message;
 	}
 
-	public static class StaticFile implements LookupResult {
-		protected final long lastModified;
-		protected final String mimeType;
-		protected final int contentLength;
-		protected final boolean acceptsDeflate;
-		protected final String path;
-
-		public StaticFile(long lastModified, String mimeType,
-				int contentLength, boolean acceptsDeflate, String path) {
-			this.lastModified = lastModified;
-			this.mimeType = mimeType;
-			this.contentLength = contentLength;
-			this.acceptsDeflate = acceptsDeflate;
-			this.path = path;
-		}
-
-		public long getLastModified() {
-			return lastModified;
-		}
-
-		protected boolean willDeflate() {
-			return acceptsDeflate && deflatable(mimeType)
-					&& contentLength >= deflateThreshold;
-		}
-
-		protected void setHeaders(HttpServletResponse resp) {
-			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.setContentType(mimeType);
-			if (contentLength >= 0 && !willDeflate())
-				resp.setContentLength(contentLength);
-		}
-
-		public void respondGet(HttpServletResponse resp) throws IOException {
-			setHeaders(resp);
-			final OutputStream os;
-			if (willDeflate()) {
-				resp.setHeader("Content-Encoding", "gzip");
-				os = new GZIPOutputStream(resp.getOutputStream(), bufferSize);
-			} else
-				os = resp.getOutputStream();
-
-			FileInputStream fis = new FileInputStream(path);
-			transferStreams(fis, os);
-		}
-
-		public void respondHead(HttpServletResponse resp) {
-			if (willDeflate())
-				throw new UnsupportedOperationException();
-			setHeaders(resp);
-		}
+	public long getLastModified() {
+	    return -1;
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		lookup(req).respondGet(resp);
+	public void respondGet(HttpServletResponse resp) throws IOException {
+	    resp.sendError(statusCode, message);
 	}
 
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		doGet(req, resp);
+	public void respondHead(HttpServletResponse resp) {
+	    throw new UnsupportedOperationException();
+	}
+    }
+
+    public static class StaticFile implements LookupResult {
+	protected final long lastModified;
+	protected final String mimeType;
+	protected final int contentLength;
+	protected final boolean acceptsDeflate;
+	protected final String path;
+
+	public StaticFile(long lastModified, String mimeType, int contentLength, boolean acceptsDeflate, String path) {
+	    this.lastModified = lastModified;
+	    this.mimeType = mimeType;
+	    this.contentLength = contentLength;
+	    this.acceptsDeflate = acceptsDeflate;
+	    this.path = path;
 	}
 
-	@Override
-	protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-		try {
-			lookup(req).respondHead(resp);
-		} catch (UnsupportedOperationException e) {
-			super.doHead(req, resp);
-		}
+	public long getLastModified() {
+	    return lastModified;
 	}
 
-	@Override
-	protected long getLastModified(HttpServletRequest req) {
-		return lookup(req).getLastModified();
+	protected boolean willDeflate() {
+	    return acceptsDeflate && deflatable(mimeType) && contentLength >= deflateThreshold;
 	}
 
-	protected LookupResult lookup(HttpServletRequest req) {
-		LookupResult r = (LookupResult) req.getAttribute("lookupResult");
-		if (r == null) {
-			r = lookupNoCache(req);
-			req.setAttribute("lookupResult", r);
-		}
-		return r;
+	protected void setHeaders(HttpServletResponse resp) {
+	    resp.setStatus(HttpServletResponse.SC_OK);
+	    resp.setContentType(mimeType);
+	    if (contentLength >= 0 && !willDeflate())
+		resp.setContentLength(contentLength);
 	}
 
-	protected LookupResult lookupNoCache(HttpServletRequest req) {
-		System.out.println("DEBUG SERVICE = "+configRepository);
-		String path = getPath(req);
-		if (isForbidden(path))
-			return new Error(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+	public void respondGet(HttpServletResponse resp) throws IOException {
+	    setHeaders(resp);
+	    final OutputStream os;
+	    if (willDeflate()) {
+		resp.setHeader("Content-Encoding", "gzip");
+		os = new GZIPOutputStream(resp.getOutputStream(), bufferSize);
+	    } else
+		os = resp.getOutputStream();
 
-		path = path.replace(MAPPING_URL, "");
-		path = configRepository.getPath()+path;
-
-		final String mimeType = getMimeType(path);
-
-		// Try as an ordinary file
-		File f = new File(path);
-		if (!f.isFile())
-			return new Error(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
-		else
-			return new StaticFile(f.lastModified(), mimeType, (int) f.length(),
-					acceptsDeflate(req), path);
+	    FileInputStream fis = new FileInputStream(path);
+	    transferStreams(fis, os);
 	}
 
-	protected String getPath(HttpServletRequest req) {
-		String servletPath = req.getServletPath();
-		String pathInfo = coalesce(req.getPathInfo(), "");
-		return servletPath + pathInfo;
+	public void respondHead(HttpServletResponse resp) {
+	    if (willDeflate())
+		throw new UnsupportedOperationException();
+	    setHeaders(resp);
 	}
+    }
 
-	protected boolean isForbidden(String path) {
-		String lpath = path.toLowerCase();
-		return lpath.startsWith("/web-inf/") || lpath.startsWith("/meta-inf/");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	lookup(req).respondGet(resp);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	doGet(req, resp);
+    }
+
+    @Override
+    protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+	try {
+	    lookup(req).respondHead(resp);
+	} catch (UnsupportedOperationException e) {
+	    super.doHead(req, resp);
 	}
+    }
 
-	protected String getMimeType(String path) {
-		return coalesce(getServletContext().getMimeType(path),
-				"application/octet-stream");
+    @Override
+    protected long getLastModified(HttpServletRequest req) {
+	return lookup(req).getLastModified();
+    }
+
+    protected LookupResult lookup(HttpServletRequest req) {
+	LookupResult r = (LookupResult) req.getAttribute("lookupResult");
+	if (r == null) {
+	    r = lookupNoCache(req);
+	    req.setAttribute("lookupResult", r);
 	}
+	return r;
+    }
 
-	protected static boolean acceptsDeflate(HttpServletRequest req) {
-		final String ae = req.getHeader("Accept-Encoding");
-		return ae != null && ae.contains("gzip");
+    protected LookupResult lookupNoCache(HttpServletRequest req) {
+	String path = getPath(req);
+
+	path = path.replace(MAPPING_URL, "");
+	// pour etre sur de ne pas accéder à une ressource interdite
+	path = path.replaceAll("..", "");
+	path = configRepository.getPath() + path;
+
+	final String mimeType = getMimeType(path);
+
+	// Try as an ordinary file
+	File f = new File(path);
+	if (!f.isFile())
+	    return new Error(HttpServletResponse.SC_NOT_FOUND, "Not found");
+	else
+	    return new StaticFile(f.lastModified(), mimeType, (int) f.length(), acceptsDeflate(req), path);
+    }
+
+    protected String getPath(HttpServletRequest req) {
+	String servletPath = req.getServletPath();
+	String pathInfo = coalesce(req.getPathInfo(), "");
+	return servletPath + pathInfo;
+    }
+
+    protected String getMimeType(String path) {
+	return coalesce(getServletContext().getMimeType(path), "application/octet-stream");
+    }
+
+    protected static boolean acceptsDeflate(HttpServletRequest req) {
+	final String ae = req.getHeader("Accept-Encoding");
+	return ae != null && ae.contains("gzip");
+    }
+
+    protected static boolean deflatable(String mimetype) {
+	return mimetype.startsWith("text/") || mimetype.equals("application/postscript") || mimetype.startsWith("application/ms") || mimetype.startsWith("application/vnd") || mimetype.endsWith("xml");
+    }
+
+    public static <T> T coalesce(T... ts) {
+	for (T t : ts)
+	    if (t != null)
+		return t;
+	return null;
+    }
+
+    protected static final int deflateThreshold = 4 * 1024;
+
+    protected static final int bufferSize = 4 * 1024;
+
+    protected static void transferStreams(InputStream is, OutputStream os) throws IOException {
+	try {
+	    byte[] buf = new byte[bufferSize];
+	    int bytesRead;
+	    while ((bytesRead = is.read(buf)) != -1)
+		os.write(buf, 0, bytesRead);
+	} finally {
+	    is.close();
+	    os.close();
 	}
-
-	protected static boolean deflatable(String mimetype) {
-		return mimetype.startsWith("text/")
-				|| mimetype.equals("application/postscript")
-				|| mimetype.startsWith("application/ms")
-				|| mimetype.startsWith("application/vnd")
-				|| mimetype.endsWith("xml");
-	}
-
-	public static <T> T coalesce(T... ts) {
-		for (T t : ts)
-			if (t != null)
-				return t;
-		return null;
-	}
-
-	protected static final int deflateThreshold = 4 * 1024;
-
-	protected static final int bufferSize = 4 * 1024;
-
-	protected static void transferStreams(InputStream is, OutputStream os)
-			throws IOException {
-		try {
-			byte[] buf = new byte[bufferSize];
-			int bytesRead;
-			while ((bytesRead = is.read(buf)) != -1)
-				os.write(buf, 0, bytesRead);
-		} finally {
-			is.close();
-			os.close();
-		}
-	}
+    }
 }
