@@ -1,4 +1,4 @@
-#add-video {
+.left-icon {
 	position : fixed;
 	top : 150px;
 	left : 0;
@@ -14,9 +14,19 @@
 	cursor : pointer;
 }
 
-#add-video:hover {
+.left-icon:hover {
 	background : #e6e6e6;
 }
+
+#add-video {
+	top: 150px;
+}
+
+#scan-folder {
+	top : 220px;
+
+}
+
 
 @media (min-width: 1200px) {
   .container {

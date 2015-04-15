@@ -154,6 +154,19 @@ public class VideoResource {
     }
 
     /**
+     * GET /scan -> scan the directories to find new video files
+     * 
+     * @throws Exception
+     */
+    @RequestMapping(value = "/scan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public List<String> scan() throws Exception {
+	log.debug("REST request to scan : {}");
+
+	return videoService.scan();
+    }
+
+    /**
      * POST /uploadVideo -> upload a video file with the imdbId associated.
      */
     @RequestMapping(value = "/createVideo", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)

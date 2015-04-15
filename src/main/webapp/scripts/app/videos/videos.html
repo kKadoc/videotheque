@@ -1,56 +1,7 @@
-<div class="modal fade" id="createVideoPanel" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
-	<div class="modal-dialog">
-	    <div class="modal-content">
-	        <form name="editForm" role="form" novalidate ng-submit="create()">
-	
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
-	                <h4 class="modal-title">Nouvelle vidéo</h4>
-	            </div>
-	            <div class="modal-body">
-	            	<div class="form-group">
-	            		<label>Fichier vidéo</label>
-	            		<input type="text" class="form-control" ng-model="videoFile" on-enter="updateKeyword(); guess()">
-	            	</div>
-	            	<div class="form-group">
-	            		<label>Fichier sous-titre</label>
-	            		<input type="text" class="form-control" ng-model="subFile" >
-	            	</div>
-	            	
-	            	<div class="form-group">
-	            		<label>Mot clé pour la recherche IMDB</label>
-	            		<input type="text" class="form-control" ng-model="keyword" ng-change="customKeyword = true" on-enter="guess()">
-	            	</div>
-	            	
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">Propositions IMDB</h3>
-						</div>
-						<div class="panel-body listGuess">
-							<a ng-repeat="guess in listGuess" ng-click="createVideo(guess.imdbId)">
-			                	<b>{{guess.title}}</b> <span>({{guess.year}})</span> <span>type : {{guess.type}}</span>
-			                </a>
-			                
-			                <div id="use-id" class="form-group">
-			            		<label>Ou utiliser cet id :</label>
-			            		<input type="text" class="form-control small" ng-model="imdbId" on-enter="useImdbId()">
-			            		<button type="submit" ng-click="useImdbId()" class="btn btn-default"><i class="mdi mdi-checkbox-marked-circle"></i></button>
-	            			</div>
-						</div>
-					</div>
-
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-	                    <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
-	                </button>
-	            </div>
-	        </form>
-	    </div>
-	</div>
-</div>
-   
-<i id="add-video" class="mdi mdi-library-plus" ng-click="showCreateModal()"></i>
+<div ng-controller="CreateVideoController as createCtrl">
+<ng-include src="'/scripts/app/videos/modal/scanFolderPanel/scanFolderPanel.html'" ng-controller="ScanFolderController as scanCtrl"></ng-include>
+<ng-include src="'/scripts/app/videos/modal/createVideoPanel/createVideoPanel.html'"></ng-include>
+ 
 <div ng-cloak id="videos-container" class="videos" ng-class="display">       
 	<div class="display">
 		<form class="form-inline">
@@ -81,15 +32,16 @@
 	<p>watch count {{watchcount()}}</p>
 	<div ng-class="{favoris: video.favoris}" class="video" ng-repeat="video in videos | filter:filterFunction | orderBy: orderField : reverseOrder">
 		<i class="star-icon mdi mdi-star-outline" ng-click="::toggleFav(video)"></i>
-		<img class="cover" ng-src="/cover/{{::video.imgFile.path}}" />
+		<!-- <img class="cover" ng-src="/cover/{{::video.imgFile.path}}" />-->
 		<div class="content">
 			<h4>{{::video.title}}</h4>
 			<p class="year">{{::video.year}}</p>
-			<p class="duration">{{::displayDuration(video.duration)}}</p>
-			<p class="addDate">{{::displayDate(video.addDate)}}</p>
-			<i class="rate" ng-class="displayRate(video.rate)"></i>
-			<p class="type"><span ng-repeat="type in video.videoTypes">{{::type.name}}{{$last ? '' : ', '}}</span></p>
+			<p class="duration">{{::video.duration | duration}}</p>
+			<p class="addDate">{{::video.addDate | date:'dd/MM/yyyy'}}</p>
+			<i class="rate" ng-class="::video.rate | rate"></i>
+			<p class="type"><span ng-repeat="type in ::video.videoTypes">{{::type.name}}{{$last ? '' : ', '}}</span></p>
 			<i class="play-icon mdi mdi-play-box-outline" ng-click="::play(video.id)"></i>
 		</div>
 	</div>
+</div>
 </div>

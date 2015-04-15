@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import fr.mmtech.repository.VideoRepository;
 import fr.mmtech.repository.VideoTypeRepository;
 import fr.mmtech.service.util.CleanerUtil;
 import fr.mmtech.service.util.IMDBUtil;
+import fr.mmtech.service.util.ScannerUtil;
 import fr.mmtech.web.rest.dto.GuessDTO;
 import fr.mmtech.web.rest.dto.VideoImdbDTO;
 
@@ -401,4 +403,25 @@ public class VideoService {
 
     }
 
+    /**
+     * Scan les répertoires d'entrée pour trouver les nouveaux fichiers vidéo
+     * 
+     * @return la liste des nouveaux fichiers
+     */
+    public List<String> scan() {
+	List<String> dirs = configRepository.listScanDirs();
+	List<String> files = new ArrayList<String>();
+	log.debug("SCAN START - - - - - - - - - - - - - - - - - - - - - - -");
+	for (String dir : dirs) {
+	    ScannerUtil scanner = new ScannerUtil(dir, files);
+	    try {
+		scanner.scan();
+	    } catch (IOException e) {
+		log.error("Error scanning dir " + dir, e);
+	    }
+	}
+	log.debug("SCAN ENDED - - - - - - - - - - - - - - - - - - - - - - -");
+
+	return files;
+    }
 }

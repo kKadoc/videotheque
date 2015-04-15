@@ -11,7 +11,7 @@ angular.module('videothequeApp')
     		 });
     	};
     	
-    	service.guess = function(keyword, useKeyword, callback){
+    	service.guess = function(keyword, useKeyword){
     		var data;
     		if (useKeyword) {
     			data = { k: keyword };
@@ -19,7 +19,7 @@ angular.module('videothequeApp')
     		else {
     			data = { f: keyword }
     		}
-    		$http({
+    		return $http({
     		    url: 'api/guess', 
     		    method: "POST",
     		    data: data,
@@ -30,7 +30,12 @@ angular.module('videothequeApp')
     		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     		      return str.join("&");
     		    }
-    		 }).success(callback);
+    		 }).success(function(data){
+    			 service.listGuess = data;
+    		 })
+    		 .error(function() {
+    			 alert("Error getting guess");
+    		 });
     	};
     	
     	service.createVideo = function(videoFile, subFile, imdbId, callback){
@@ -63,6 +68,20 @@ angular.module('videothequeApp')
     		    url: 'api/clearAppDir', 
     		    method: "GET"
     		 }).success(callback);
-    	}
+    	};
+    	
+    	service.scanDirs = function() {
+	    	return $http({
+			    url: 'api/scan', 
+			    method: "GET",
+			    
+		    	}).success(function(data){
+		    		service.listFiles = data;
+				})
+				.error(function() {
+					alert("Error scanning ");
+				});
+    	};
+    	
     	return service;
     });

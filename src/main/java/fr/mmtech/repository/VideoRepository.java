@@ -13,4 +13,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     @Query("select video from Video video left join fetch video.videoTypes where video.id =:id")
     Video findOneWithEagerRelationships(@Param("id") Long id);
+
+    Video findOneByImdbId(String imdbId);
 }
