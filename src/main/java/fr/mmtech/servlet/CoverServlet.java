@@ -154,7 +154,7 @@ public class CoverServlet extends HttpServlet {
 
 	path = path.replace(MAPPING_URL, "");
 	// pour etre sur de ne pas accéder à une ressource interdite
-	path = path.replaceAll("..", "");
+	path = path.replaceAll("\\.\\.", "");
 	path = configRepository.getPath() + path;
 
 	final String mimeType = getMimeType(path);

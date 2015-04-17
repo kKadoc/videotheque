@@ -183,47 +183,47 @@
 	background-size: 400px 650px;
 }
 
-.videos.list .rate.rate0 {
+.videos .rate.rate0 {
 	background-position: -85px -368px;
 }
 
-.videos.list .rate.rate0_5 {
+.videos .rate.rate0_5 {
 	background-position: -239px -368px;
 }
 
-.videos.list .rate.rate1 {
+.videos .rate.rate1 {
 	background-position: -69px -368px;
 }
 
-.videos.list .rate.rate1_5 {
+.videos .rate.rate1_5 {
 	background-position: -223px -368px;
 }
 
-.videos.list .rate.rate2 {
+.videos .rate.rate2 {
 	background-position: -53px -368px;
 }
 
-.videos.list .rate.rate2_5 {
+.videos .rate.rate2_5 {
 	background-position: -207px -368px;
 }
 
-.videos.list .rate.rate3 {
+.videos .rate.rate3 {
 	background-position: -37px -368px;
 }
 
-.videos.list .rate.rate3_5 {
+.videos .rate.rate3_5 {
 	background-position: -191px -368px;
 }
 
-.videos.list .rate.rate4 {
+.videos .rate.rate4 {
 	background-position: -21px -368px;
 }
 
-.videos.list .rate.rate4_5 {
+.videos .rate.rate4_5 {
 	background-position: -175px -368px;
 }
 
-.videos.list .rate.rate5 {	
+.videos .rate.rate5 {	
 	background-position: -5px -368px;
 }
 
@@ -234,13 +234,18 @@
 /** STYLE CARD */
 .videos.card .video {
 	float : left;
-	width : 250px;
+	width : 46%;
 	height : 200px;
 	
 	border : 1px solid #CCC;
-	padding : 10px;
-	margin : 5px;
+	margin : 5px 2%;
 	background : rgba(255, 255, 255, 0.8);
+}
+
+.videos.card .video .content {
+	padding : 10px;	
+	margin-left: 10px;
+	display: inline-block;
 }
 
 .videos.card .star-icon {
@@ -250,8 +255,28 @@
 	font-size : 2em;
 }
 
+.videos.card .video .cover{
+	height : 100%;
+	padding : 0;
+	margin : 0;
+	float : left;
+}
 
+.videos.card .rate {
+	display : inline-block;
+	width: 80px;
+	height: 18px;
+	
+	background-image: url(../images/aui_sprite_0036-1x._V1_.png);
+	background-repeat: no-repeat;
+	-webkit-background-size: 400px 650px;
+	background-size: 400px 650px;
+}
 
+.videos.card .play-icon {
+	font-size : 1.4em;
+	cursor : pointer;
+}
 
 
 
