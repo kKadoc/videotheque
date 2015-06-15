@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
             	<ul>
-            		<li ng-repeat="file in scanCtrl.listFiles"><a href="#" ng-click="createCtrl.showCreateModalWithFile(file)">{{file}}</a></li>
+            		<li ng-repeat="file in scanCtrl.listFiles"><a href="#" ng-click="createCtrl.showCreateModalWithFileAndSubs(file.videoPath, file.subPath)">{{file.videoPath}}</a></li>
             	</ul>
 
             </div>

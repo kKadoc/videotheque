@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideosController', function ($scope, $cookies, $browser, localStorageService, Video, VideoType, VideoService) {
+    .controller('VideosController', function ($scope, $location, $cookies, $browser, localStorageService, Video, VideoType, VideoService) {
     	   	
     	//récupération des types de vidéo
     	$scope.types = [];
@@ -68,7 +68,8 @@ angular.module('videothequeApp')
 
         //lecture d'une video
         $scope.play = function(id) {
-        	VideoService.play(id);
+        	//VideoService.play(id);
+        	$location.path('/play').search({id: id});
         };
         
 		$scope.toggleFav = function(video) {
@@ -76,47 +77,5 @@ angular.module('videothequeApp')
 			Video.update(video, function () {});
 		}
 
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       $scope.watchcount = function () { return getWatchCount($scope); };
-       
-       $scope.$watch('$viewContentLoaded', function() {
-    	    //console.profileEnd();
-    	    //console.log("done");
-    	  });
-       
-       function getWatchCount (scope, scopeHash) {
-    	    // default for scopeHash
-    	    if (scopeHash === undefined) {
-    	        scopeHash = {};
-    	    }
-    	    
-    	    // make sure scope is defined and we haven't already processed this scope
-    	    if (!scope || scopeHash[scope.$id] !== undefined) {
-    	        return 0;
-    	    }
-    	    
-    	    var watchCount = 0;
-    	    
-    	    if (scope.$$watchers) {
-    	        watchCount = scope.$$watchers.length;
-    	    }
-    	    scopeHash[scope.$id] = watchCount;
-    	    
-    	    // get the counts of children and sibling scopes
-    	    // we only need childHead and nextSibling (not childTail or prevSibling)
-    	    watchCount+= getWatchCount(scope.$$childHead, scopeHash);
-    	    watchCount+= getWatchCount(scope.$$nextSibling, scopeHash);
-
-    	    return watchCount;
-    	}
 
     });

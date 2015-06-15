@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mmtech.domain.File;
+import fr.mmtech.domain.ScanResult;
 import fr.mmtech.domain.Video;
 import fr.mmtech.domain.VideoType;
 import fr.mmtech.repository.ConfigFieldRepository;
@@ -408,9 +409,9 @@ public class VideoService {
      * 
      * @return la liste des nouveaux fichiers
      */
-    public List<String> scan() {
+    public List<ScanResult> scan() {
 	List<String> dirs = configRepository.listScanDirs();
-	List<String> files = new ArrayList<String>();
+	List<ScanResult> files = new ArrayList<ScanResult>();
 	log.debug("SCAN START - - - - - - - - - - - - - - - - - - - - - - -");
 	for (String dir : dirs) {
 	    ScannerUtil scanner = new ScannerUtil(dir, files);

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
+import fr.mmtech.domain.ScanResult;
 import fr.mmtech.domain.Video;
 import fr.mmtech.repository.FileRepository;
 import fr.mmtech.repository.VideoRepository;
@@ -160,7 +161,7 @@ public class VideoResource {
      */
     @RequestMapping(value = "/scan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<String> scan() throws Exception {
+    public List<ScanResult> scan() throws Exception {
 	log.debug("REST request to scan : {}");
 
 	return videoService.scan();
