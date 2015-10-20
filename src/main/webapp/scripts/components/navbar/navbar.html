@@ -11,7 +11,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
             <ul class="nav navbar-nav nav-pills navbar-right">
-                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                <li ng-class="{active: $state.includes('admin')}" ng-show="isInRole('ROLE_ADMIN')"  ng-switch-when="true" class="dropdown pointer">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="">
                                 <span>
                                     <span class="glyphicon glyphicon-th-list"></span>
@@ -96,6 +96,20 @@
                     <ul class="dropdown-menu">
                         <li active-menu="{{language}}" ng-repeat="language in languages">
                             <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li ui-sref-active="active" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+	                    <span>
+	                        <span class="glyphicon glyphicon-picture"></span>
+	                        <span class="hidden-tablet" translate="global.menu.theme">Theme</span>
+	                        <b class="caret"></b>
+	                    </span>
+                    </a>
+               		<ul class="dropdown-menu">
+                        <li ng-repeat="theme in themes">
+                            <a href="" ng-click="changeTheme(theme)">{{theme}}</a>
                         </li>
                     </ul>
                 </li>

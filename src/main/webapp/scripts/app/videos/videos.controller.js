@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('VideosController', function ($scope, $location, $cookies, $browser, localStorageService, Video, VideoType, VideoService) {
+    .controller('VideosController', function ($scope, $location, $cookies, $browser, $window, localStorageService, Video, VideoType, VideoService) {
     	   	
     	//récupération des types de vidéo
     	$scope.types = [];
@@ -68,8 +68,13 @@ angular.module('videothequeApp')
 
         //lecture d'une video
         $scope.play = function(id) {
-        	//VideoService.play(id);
-        	$location.path('/play').search({id: id});
+        	VideoService.play(id);
+        	//$location.path('/play').search({id: id});
+        };
+        
+        //ouverture de la page imdb
+        $scope.info = function(imdbid) {
+        	$window.open('http://www.imdb.com/title/'+imdbid, '_blank');
         };
         
 		$scope.toggleFav = function(video) {

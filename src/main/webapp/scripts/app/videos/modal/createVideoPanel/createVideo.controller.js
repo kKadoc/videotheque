@@ -68,7 +68,6 @@ angular.module('videothequeApp')
         		if (data != null) {
         			alert(data);
         		}
-        		this.refreshVideosList();
         		
         		$('#createVideoPanel').modal('hide');
             });

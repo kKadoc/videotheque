@@ -1,0 +1,58 @@
+body.dark {
+	background : black;
+}
+
+body.dark .left-icon {
+	background : #00231E;
+	border : none;
+	color : #00CBB0;
+}
+
+body.dark .left-icon:hover {
+	background : #00231E;
+	color : #FFF;
+}
+
+body.dark .navbar-default {
+    background-color: #00231E;
+    color : #00CBB0;
+    border : none;
+}
+
+body.dark .navbar-default .navbar-nav > li > a, body.dark .navbar-default .navbar-brand {
+    color : #00CBB0;
+}
+
+body.dark .navbar-default .navbar-nav > li > a:hover, body.dark .navbar-default .navbar-nav > li > a.active, body.dark .navbar-default .navbar-brand:hover {
+    color : #FFF;
+}
+
+body.dark .well {
+	background : none;
+	border-color : #00CBB0;
+}
+
+body.dark .videos.list .video {
+	background :  none;
+	color : #00CBB0;
+	border :  none;
+}
+
+body.dark .btn-group button {
+	background : #00231E;
+	border : none;
+	color : #00CBB0;
+}
+body.dark .btn-group button.active, body.dark .btn-group button:hover {
+	background : #00231E;
+	color : white;
+}
+
+body.dark input, body.dark .form-control {
+	background : transparent;
+	border: 1px solid #00231E;
+}
+
+body.dark select.form-control {
+	color : darkgrey;
+}

@@ -1,11 +1,23 @@
 <div ng-controller="PlayController as playCtrl">
-	<!-- <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"
-       width="640"
-       height="480"
-       id="vlc" 
-       filename="/drsefop.avi"/>-->
+	<embed type="application/x-vlc-plugin" 
+		name="video1" 
+		autoplay="yes" loop="yes" width="400" height="300" 
+		target="drop.avi" />
        
        <video width="400" height="222" controls="controls">
 			<source src="drop.avi">
 		</video>
+		
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><a href="drop.avi">lien</a>
+  <img dynsrc="drop.avi" start="fileopen">
+  <OBJECT ID="ActiveMovie1" WIDTH=267 HEIGHT=75
+CLASSID="CLSID:05589FA1-C356-11CE-BF01-00AA0055595A">
+<PARAM NAME = "Filename" VALUE = "drop.avi">
+<PARAM NAME = "Rate" VALUE = "2.0">
+<PARAM NAME = "FullScreenMode" VALUE = "4">
+</OBJECT>
+
+<embed type="application/x-mplayer2" pluginspage="http://www.microsoft.com/Windows/MediaPlayer/" 
+name="mediaplayer1" ShowStatusBar="true" EnableContextMenu="false" autostart="false" 
+height="330" width="360" loop="false" src="drop.avi" />
 </div>

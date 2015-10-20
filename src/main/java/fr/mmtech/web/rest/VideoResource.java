@@ -119,7 +119,7 @@ public class VideoResource {
 	try {
 	    videoService.play(id);
 	} catch (Exception e) {
-	    log.error("Error lors de la mise à jour de la vidéo", e);
+	    log.error("Error lors de la lecture de la vidéo", e);
 	    return e.getMessage();
 	}
 	return null;

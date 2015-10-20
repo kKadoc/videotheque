@@ -108,6 +108,11 @@
 	color : red;
 }
 
+.info-icon:hover {
+	color : green;
+}
+
+
 
 /** STYLE LIST */
 .videos.list .video {
@@ -156,6 +161,14 @@
 .videos.list .play-icon {
 	position : absolute;
 	right :  40px;
+	top : 6px;
+	font-size : 1.4em;
+	cursor : pointer;
+}
+
+.videos.list .info-icon {
+	position : absolute;
+	right :  73px;
 	top : 6px;
 	font-size : 1.4em;
 	cursor : pointer;

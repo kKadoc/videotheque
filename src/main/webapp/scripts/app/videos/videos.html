@@ -23,8 +23,8 @@
 			</select>
 			
 			<div class="btn-group right" role="group" aria-label="...">
-				<button type="button" class="btn btn-default" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"><i class="mdi mdi-view-list"></i></button>
-				<button type="button" class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-headline"></i></button>
+				<button type="button" class="btn btn-default" ng-class="{active: display == 'list'}" ng-click="changeDisplay('list')"><i class="mdi mdi-view-headline"></i></button>
+				<button type="button" class="btn btn-default" ng-class="{active: display == 'card'}" ng-click="changeDisplay('card')"><i class="mdi mdi-view-list"></i></button>
 				<button type="button" class="btn btn-default" ng-class="{active: display == 'poster'}" ng-click="changeDisplay('poster')"><i class="mdi mdi-view-week"></i></button>
 			</div>
 		</form>
@@ -40,6 +40,7 @@
 			<i class="rate" ng-class="::video.rate | rate" title="{{::video.rate}}"></i>
 			<p class="type"><span ng-repeat="type in ::video.videoTypes">{{::type.name}}{{$last ? '' : ', '}}</span></p>
 			<i class="play-icon mdi mdi-play-box-outline" ng-click="::play(video.id)"></i>
+			<i class="info-icon mdi mdi-information-outline" ng-click="::info(video.imdbId)"></i>
 		</div>
 	</div>
 </div>
