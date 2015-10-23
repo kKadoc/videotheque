@@ -13,7 +13,6 @@ angular.module('videothequeApp')
         $scope.refreshTypesList();
         
     	// récupération de la liste
-    	
     	$scope.refreshVideosList = function() {
     		Video.query(function(result) {
                $scope.videos = result;

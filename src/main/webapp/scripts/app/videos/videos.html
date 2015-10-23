@@ -1,10 +1,11 @@
-<div ng-controller="CreateVideoController as createCtrl">
-<ng-include src="'/scripts/app/videos/modal/scanFolderPanel/scanFolderPanel.html'" ng-controller="ScanFolderController as scanCtrl"></ng-include>
-<ng-include src="'/scripts/app/videos/modal/createVideoPanel/createVideoPanel.html'"></ng-include>
+<ng-include src="'/scripts/app/videos/modal/scanFolderPanel/scanFolderPanel.html'" ng-controller="ScanFolderController"></ng-include>
+<ng-include src="'/scripts/app/videos/modal/createVideoPanel/createVideoPanel.html'" ng-controller="CreateVideoController"></ng-include>
  
 <div ng-cloak id="videos-container" class="videos" ng-class="display">       
 	<div class="display">
 		<form class="form-inline">
+			<span><b>{{videos.length}}</b> vidéos</span>
+			
 			<input ng-model="filterName" type="text" placeholder="Filtrer par" autofocus>
 		
 			<label>Trier par</label>
@@ -43,5 +44,4 @@
 			<i class="info-icon mdi mdi-information-outline" ng-click="::info(video.imdbId)"></i>
 		</div>
 	</div>
-</div>
 </div>

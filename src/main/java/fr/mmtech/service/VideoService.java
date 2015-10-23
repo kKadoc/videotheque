@@ -63,7 +63,6 @@ public class VideoService {
 
 	Runtime runtime = Runtime.getRuntime();
 	String path = configRepository.getPath();
-	System.out.println(path);
 
 	String cmd = "cmd /c start \"\" \"" + path + video.getVideoFile().getPath();
 	log.debug("running cmd : " + cmd);

@@ -34,7 +34,8 @@ angular.module('videothequeApp')
         };
         
         $scope.refreshFromImdb = function (id) {
-        	VideoService.refreshFromImdb(id, function(result) {
+        	VideoService.refreshFromImdb(id)
+        	.then(function() {
                 $scope.reset();
             });
         };

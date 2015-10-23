@@ -4,16 +4,33 @@ angular.module('videothequeApp')
     .factory('VideoService', function ($http) {
     	var service = {};
         
+    	//liste des films potentiels pour une vidéo
+    	service.listGuess = [];
+    	//liste des fichiers scannés
+    	service.listScanFiles = [];
+    	
+    	/**
+    	 * Lecture de la video {id}
+    	 * @param : id : id de la video à lire
+    	 */
     	service.play = function(id){
-    		$http({
+    		return $http({
     		    url: 'api/play/' + id, 
     		    method: "GET"
+    		 }).error(function(response) {
+    			 alert("Error playing vidéo : "+response);
     		 });
     	};
     	
-    	service.guess = function(keyword, useKeyword){
+    	/**
+    	 * Récupération de la liste de films potentiels correspondant au fichier vidéo
+    	 * @param : keyword : le mot clé à utiliser
+    	 * @param : customKeyword : indique si le mot clé fourni a été calculé automatiquement ou fourni par l'utilisateur
+    	 * @return : alimente listGuess
+    	 */
+    	service.guess = function(keyword, customKeyword){
     		var data;
-    		if (useKeyword) {
+    		if (customKeyword) {
     			data = { k: keyword };
     		}
     		else {
@@ -30,16 +47,22 @@ angular.module('videothequeApp')
     		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     		      return str.join("&");
     		    }
-    		 }).success(function(data){
-    			 service.listGuess = data;
+    		 }).success(function(response){
+    			 service.listGuess = response;
     		 })
     		 .error(function() {
     			 alert("Error getting guess");
     		 });
     	};
     	
-    	service.createVideo = function(videoFile, subFile, imdbId, callback){
-    		$http({
+    	/**
+    	 * Enregistre une vidéo en base de donnée
+    	 * @param : videoFile : le fichier vidéo
+    	 * @param : subFile : le fichier de sous-titres
+    	 * @param : imdbId : l'id imdb choisi par l'utilisateur
+    	 */
+    	service.createVideo = function(videoFile, subFile, imdbId){
+    		return $http({
     		    url: 'api/createVideo', 
     		    method: "POST",
     		    data: { videoFile: videoFile, subFile: subFile == null ? "" : subFile, imdbId: imdbId },
@@ -50,38 +73,64 @@ angular.module('videothequeApp')
     		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     		      return str.join("&");
     		    }
-    		 }).success(callback)
-    		 .error(function(data){
-    			 alert(data);
-    		});
+    		 }).success(function(data){
+    			 console.log('vidéo créée pour ' + videoFile);
+    		 })
+    		 .error(function() {
+    			 alert("Error creating vidéo");
+    		 });
     	};
     	
-    	service.refreshFromImdb = function(id, callback){
-    		$http({
+    	/**
+    	 * Recharge les informations de la vidéo depuis imdb
+    	 * @param : id : id de la vidéo à mettre à jour
+    	 */
+    	service.refreshFromImdb = function(id){
+    		return $http({
     		    url: 'api/refreshImdb/' + id, 
     		    method: "GET"
-    		 }).success(callback);
+    		 }).success(function(data){
+    			 console.log('vidéo mise à jour');
+    		 })
+    		 .error(function() {
+    			 alert("Error refreshing video");
+    		 });
     	};
     	
-    	service.clearAppDir = function(callback) {
-    		$http({
+    	/**
+    	 * Netoie le fichier bibliothèque
+    	 */
+    	service.clearAppDir = function() {
+    		return $http({
     		    url: 'api/clearAppDir', 
     		    method: "GET"
-    		 }).success(callback);
+    		 }).success(function(data){
+    			 console.log('netoyage réussi');
+    		 })
+    		 .error(function() {
+    			 alert("Error clearing directory");
+    		 });
     	};
     	
+    	/**
+    	 * Recherche les fichiers vidéos dans les répertoires d'entrée
+    	 * @return : alimente listScanFiles
+    	 */
     	service.scanDirs = function() {
 	    	return $http({
 			    url: 'api/scan', 
-			    method: "GET",
-			    
-		    	}).success(function(data){
-		    		service.listFiles = data;
-				})
-				.error(function() {
-					alert("Error scanning ");
-				});
+			    method: "GET", 
+	    	}).success(function(response){
+	    		console.log(response);
+	    		service.listScanFiles = response;
+			})
+			.error(function(response) {
+				console.log(response);
+				alert("Error scanning : "+ response);
+			});
     	};
+    	
+
     	
     	return service;
     });

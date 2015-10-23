@@ -2,7 +2,6 @@ package fr.mmtech.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -21,20 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import fr.mmtech.domain.ScanResult;
 import fr.mmtech.domain.Video;
-import fr.mmtech.repository.FileRepository;
 import fr.mmtech.repository.VideoRepository;
-import fr.mmtech.repository.VideoTypeRepository;
 import fr.mmtech.service.VideoService;
-import fr.mmtech.service.util.ReloadUtil;
-import fr.mmtech.web.rest.dto.GuessDTO;
 
 /**
  * REST controller for managing Video.
  */
 @RestController
 @RequestMapping("/api")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class VideoResource {
 
     private final Logger log = LoggerFactory.getLogger(VideoResource.class);
@@ -42,11 +37,11 @@ public class VideoResource {
     @Inject
     private VideoRepository videoRepository;
 
-    // TODO DELETE
-    @Inject
-    private FileRepository fileRepository;
-    @Inject
-    private VideoTypeRepository typeRepository;
+    // // TODO DELETE
+    // @Inject
+    // private FileRepository fileRepository;
+    // @Inject
+    // private VideoTypeRepository typeRepository;
 
     @Inject
     private VideoService videoService;
@@ -84,9 +79,9 @@ public class VideoResource {
      */
     @RequestMapping(value = "/videos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Video> getAll() throws URISyntaxException {
+    public ResponseEntity getAll() throws URISyntaxException {
 	log.debug("REST request to get all Videos : {}");
-	return videoRepository.findAll();
+	return new ResponseEntity(videoRepository.findAll(), HttpStatus.OK);
     }
 
     /**
@@ -112,33 +107,33 @@ public class VideoResource {
     /**
      * GET /play/:id -> play the "id" video.
      */
-    @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/play/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public String play(@PathVariable Long id) {
+    public ResponseEntity play(@PathVariable Long id) {
 	log.debug("REST request to play Video : {}", id);
 	try {
 	    videoService.play(id);
 	} catch (Exception e) {
 	    log.error("Error lors de la lecture de la vidéo", e);
-	    return e.getMessage();
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	return null;
+	return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
-     * GET /refreshImdb/:id -> reload dat from imdb for the "id" video.
+     * GET /refreshImdb/:id -> reload from imdb for the "id" video.
      */
-    @RequestMapping(value = "/refreshImdb/{id}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/refreshImdb/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<String> refreshImdb(@PathVariable Long id) {
+    public ResponseEntity refreshImdb(@PathVariable Long id) {
 	log.debug("REST request to refreshImdb Video : {}", id);
 	try {
 	    videoService.refreshImdb(id);
 	} catch (Exception e) {
 	    log.error("Error lors de la mise à jour de la vidéo", e);
-	    return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	return new ResponseEntity<String>(HttpStatus.OK);
+	return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
@@ -148,10 +143,15 @@ public class VideoResource {
      */
     @RequestMapping(value = "/guess", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<GuessDTO> guess(@RequestParam(value = "f", required = false) String fileName, @RequestParam(value = "k", required = false) String keyword) throws Exception {
+    public ResponseEntity guess(@RequestParam(value = "f", required = false) String fileName, @RequestParam(value = "k", required = false) String keyword) throws Exception {
 	log.debug("REST request to guess File : {}", fileName, keyword);
 
-	return videoService.guess(fileName, keyword);
+	try {
+	    return new ResponseEntity(videoService.guess(fileName, keyword), HttpStatus.OK);
+	} catch (Exception e) {
+	    log.error("Error lors de la récupération des suppositions", e);
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
     }
 
     /**
@@ -161,10 +161,14 @@ public class VideoResource {
      */
     @RequestMapping(value = "/scan", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<ScanResult> scan() throws Exception {
+    public ResponseEntity scan() throws Exception {
 	log.debug("REST request to scan : {}");
-
-	return videoService.scan();
+	try {
+	    return new ResponseEntity(videoService.scan(), HttpStatus.OK);
+	} catch (Exception e) {
+	    log.error("Error lors du scan des répertoires", e);
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
     }
 
     /**
@@ -199,10 +203,12 @@ public class VideoResource {
 	return new ResponseEntity<String>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/reload", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public void reload() {
-	ReloadUtil r = new ReloadUtil(videoRepository, fileRepository, typeRepository);
-	r.go();
-    }
+    // @RequestMapping(value = "/reload", method = RequestMethod.GET, produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // @Timed
+    // public void reload() {
+    // ReloadUtil r = new ReloadUtil(videoRepository, fileRepository,
+    // typeRepository);
+    // r.go();
+    // }
 }

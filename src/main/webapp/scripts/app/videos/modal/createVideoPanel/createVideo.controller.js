@@ -4,76 +4,74 @@ angular.module('videothequeApp')
     .controller('CreateVideoController', function (VideoService, $scope) {
 
         //affichage de la création d'une video
-        this.showCreateModal = function () {
+        $scope.showCreateModal = function () {
         	
-        	this.videoFile = null;
-            this.subFile = null;
-            this.keyword = null;
-            this.listGuess = null;
-            this.customKeyword = false;
+        	$scope.videoFile = null;
+            $scope.subFile = null;
+            $scope.keyword = null;
+            $scope.listGuess = [];
+            $scope.customKeyword = false;
             
             //on affiche le module de creation
             $('#createVideoPanel').modal('show');
         };
         
         //affichage de la création d'une vidéo avec fichier vidéo fourni
-        this.showCreateModalWithFile = function (file) {
-        	this.showCreateModal();
-        	this.videoFile = file;
-        	this.updateKeyword();
-        	this.guess();
+        $scope.showCreateModalWithFile = function (file) {
+        	$scope.showCreateModal();
+        	$scope.videoFile = file;
+        	$scope.updateKeyword();
+        	$scope.guess();
         };
         
         //affichage de la création d'une vidéo avec fichier vidéo fourni        
-        this.showCreateModalWithFileAndSubs = function (video, sub) {
+        $scope.showCreateModalWithFileAndSubs = function (video, sub) {
         	console.log(video + ' - ' + sub);
-        	this.showCreateModal();
-        	this.videoFile = video;
-        	this.subFile = sub;
-        	this.updateKeyword();
-        	this.guess();
+        	$scope.showCreateModal();
+        	$scope.videoFile = video;
+        	$scope.subFile = sub;
+        	$scope.updateKeyword();
+        	$scope.guess();
         };
         
         //mise à jour du mot clé de recherche imdb
-        this.updateKeyword = function() {
-        	this.keyword = this.videoFile;
+        $scope.updateKeyword = function() {
+        	$scope.keyword = $scope.videoFile;
         	//on vire le dossier
-        	if (this.videoFile != null && this.videoFile != "" && this.videoFile.indexOf("/") != -1) {
-        		this.keyword = this.videoFile.substr(this.videoFile.lastIndexOf("/")+1) ;
+        	if ($scope.videoFile != null && $scope.videoFile != "" && $scope.videoFile.indexOf("/") != -1) {
+        		$scope.keyword = $scope.videoFile.substr($scope.videoFile.lastIndexOf("/")+1) ;
         	}
-        	if (this.videoFile != null && this.videoFile != "" && this.videoFile.indexOf("\\") != -1) {
-        		this.keyword = this.videoFile.substr(this.videoFile.lastIndexOf("\\")+1) ;
+        	if ($scope.videoFile != null && $scope.videoFile != "" && $scope.videoFile.indexOf("\\") != -1) {
+        		$scope.keyword = $scope.videoFile.substr($scope.videoFile.lastIndexOf("\\")+1) ;
         	}
         	//on vire l'extension
-        	if (this.keyword != null && this.keyword != "" && this.keyword.indexOf(".") != -1) {
-        		this.keyword = this.keyword.substr(0, this.keyword.lastIndexOf(".")) ;
+        	if ($scope.keyword != null && $scope.keyword != "" && $scope.keyword.indexOf(".") != -1) {
+        		$scope.keyword = $scope.keyword.substr(0, $scope.keyword.lastIndexOf(".")) ;
         	}
         	
-        	this.customKeyword = false;	
+        	$scope.customKeyword = false;	
         };
         
         //tente de deviner la vidéo d'apres le mot clé
-        this.guess = function() {
-        	if (this.keyword != null && this.keyword != "") {
-	        	VideoService.guess(this.keyword, this.customKeyword)
-    				.then(function() {
-    					this.listGuess = VideoService.listGuess;
-	            }.bind(this));
+        $scope.guess = function() {
+        	if ($scope.keyword != null && $scope.keyword != "") {
+	        	VideoService.guess($scope.keyword, $scope.customKeyword)
+				.then(function() {
+					$scope.listGuess = VideoService.listGuess;
+				});
 	        }
         };
           
-        //upload des fichiers et création de la vidéo
-        this.createVideo = function(imdbId) {    	
-        	VideoService.createVideo(this.videoFile, this.subFile, imdbId, function (data) {
-        		if (data != null) {
-        			alert(data);
-        		}
-        		
-        		$('#createVideoPanel').modal('hide');
-            });
+        //création de la vidéo d'apres les fichiers en cours et l'id imdb fourni
+        $scope.createVideo = function(imdbId) {    	
+        	VideoService.createVideo($scope.videoFile, $scope.subFile, imdbId)
+			.then(function () {
+				$('#createVideoPanel').modal('hide');
+			});
         };
-         
-        this.useImdbId = function() {
-        	this.createVideo(this.imdbId);
+        
+        //lance la création de la vidéo en utilisant l'id imdb saisie par l'utilisateur
+        $scope.useImdbId = function() {
+        	$scope.createVideo($scope.imdbId);
         }
     });
