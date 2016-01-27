@@ -1,5 +1,6 @@
-<ng-include src="'/scripts/app/videos/modal/scanFolderPanel/scanFolderPanel.html'" ng-controller="ScanFolderController"></ng-include>
-<ng-include src="'/scripts/app/videos/modal/createVideoPanel/createVideoPanel.html'" ng-controller="CreateVideoController"></ng-include>
+<div ng-controller="CreateVideoController"><div ng-controller="ScanFolderController">
+<ng-include src="'/scripts/app/videos/modal/scanFolderPanel/scanFolderPanel.html'"></ng-include>
+<ng-include src="'/scripts/app/videos/modal/createVideoPanel/createVideoPanel.html'"></ng-include>
  
 <div ng-cloak id="videos-container" class="videos" ng-class="display">       
 	<div class="display">
@@ -45,3 +46,4 @@
 		</div>
 	</div>
 </div>
+</div></div>

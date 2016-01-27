@@ -78,7 +78,7 @@ public class VideoService {
      * @return
      * @throws Exception
      */
-    public List<GuessDTO> guess(String fileName, String keyword) throws Exception {
+    public String guess(String fileName, String keyword) throws Exception {
 	String finalKeyword = null;
 	if (keyword == null || keyword.isEmpty()) {
 	    // pas d'indication supplémentaire, on utilise le nom du fichier
@@ -98,7 +98,7 @@ public class VideoService {
 	}
 
 	IMDBUtil imdb = new IMDBUtil();
-	List<GuessDTO> list = null;
+	String list = null;
 	list = imdb.getKeywordGuess(finalKeyword);
 
 	return list;

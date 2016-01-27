@@ -48,7 +48,7 @@ angular.module('videothequeApp')
     		      return str.join("&");
     		    }
     		 }).success(function(response){
-    			 service.listGuess = response;
+    			 service.listGuess = response.Search;
     		 })
     		 .error(function() {
     			 alert("Error getting guess");
