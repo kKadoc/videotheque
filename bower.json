@@ -22,7 +22,7 @@
     "swagger-ui": "2.0.24",
     "angular-cache-buster": "0.4.3",
     "ngInfiniteScroll": "1.2.0",
-    "mdi": "~0.9.22-alpha"
+    "mdi": "1.5.54"
   },
   "devDependencies": {
     "angular-mocks": "1.4.0",
