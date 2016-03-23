@@ -2,7 +2,8 @@
 
 angular.module('videothequeApp')
     .controller('NavbarController', function ($scope, $location, $rootScope, $state, Auth, Principal, VideoService) {
-        $scope.isAuthenticated = Principal.isAuthenticated;
+    	$scope.isAuthenticated = Principal.isAuthenticated;
+    	$scope.isInAnyRole = Principal.isInAnyRole;
         $scope.isInRole = Principal.isInRole;
         $scope.$state = $state;
 

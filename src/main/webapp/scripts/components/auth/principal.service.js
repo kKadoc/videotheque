@@ -19,13 +19,13 @@ angular.module('videothequeApp')
 
                 return _identity.roles.indexOf(role) !== -1;
             },
-            isInAnyRole: function (roles) {
-                if (!_authenticated || !_identity.roles) {
+            isInAnyRole: function () {
+                if (!_authenticated || !_identity.roles ) {
                     return false;
                 }
 
-                for (var i = 0; i < roles.length; i++) {
-                    if (this.isInRole(roles[i])) {
+                for (var i = 0; i < _identity.roles.length; i++) {
+                    if (this.isInRole(_identity.roles[i])) {
                         return true;
                     }
                 }
