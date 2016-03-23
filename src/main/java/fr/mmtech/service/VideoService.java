@@ -31,7 +31,6 @@ import fr.mmtech.repository.VideoTypeRepository;
 import fr.mmtech.service.util.CleanerUtil;
 import fr.mmtech.service.util.IMDBUtil;
 import fr.mmtech.service.util.ScannerUtil;
-import fr.mmtech.web.rest.dto.GuessDTO;
 import fr.mmtech.web.rest.dto.VideoImdbDTO;
 
 @Service
@@ -166,6 +165,9 @@ public class VideoService {
 	// on associe le fichier à la vidéo
 	video.setVideoFile(new File(newMovieFileName, File.VIDEO_FLAG));
 
+	// on recherche s'il existe un fichier de sous-titres
+	oldSubFileName = findSubtitles(oldSubFileName, oldMovieFileName);
+
 	if (oldSubFileName != null && !oldSubFileName.isEmpty()) {
 	    // on récupère e fichier sous titres
 	    String newSubFileName = dirName + java.io.File.separatorChar + title + oldSubFileName.substring(oldSubFileName.lastIndexOf("."));
@@ -208,6 +210,28 @@ public class VideoService {
 	msg += "Vidéo ajoutée avec succès.";
 	return msg;
 
+    }
+
+    /**
+     * Détermine si un fichier de sous-titre existe
+     * 
+     * @param oldSubFileName
+     * @param oldMovieFileName
+     * @return
+     */
+    private String findSubtitles(String oldSubFileName, String oldMovieFileName) {
+	// si le fichier est indiqué, inutile de chercher plus loin
+	if (oldSubFileName != null) {
+	    return oldSubFileName;
+	}
+
+	String subs = oldMovieFileName.substring(0, oldMovieFileName.lastIndexOf("."));
+	java.io.File subsFile = new java.io.File(subs);
+	if (subsFile.exists()) {
+	    return subs;
+	}
+
+	return null;
     }
 
     /**
