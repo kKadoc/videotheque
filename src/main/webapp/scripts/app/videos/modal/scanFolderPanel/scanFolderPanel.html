@@ -1,4 +1,4 @@
-<i id="scan-folder" class="mdi mdi-folder-move left-icon" ng-click="showScanModal()" title="Rechercher de nouveaux fichiers"></i>
+<i id="scan-folder" class="mdi mdi-file-find left-icon" ng-click="showScanModal()" title="Rechercher de nouveaux fichiers"></i>
 <div class="modal fade" id="scanFolderPanel" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
 	<div class="modal-dialog">
 	    <div class="modal-content">
@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
             	<ul>
-            		<li ng-repeat="file in listFiles"><a href="#" ng-click="showCreateModalWithFileAndSubs(file.videoPath, file.subPath)">{{file.videoPath}}</a></li>
+            		<li ng-repeat="file in listScanFiles"><a href="#" ng-click="showCreateModalWithFileAndSubs(file.videoPath, file.subPath)">{{file.videoPath}}</a></li>
             	</ul>
 
             </div>
