@@ -245,7 +245,7 @@ public class VideoService {
 	// on supprime tous les caractères interdits
 	title = title.replaceAll("[<>:\"/\\|?*]", "");
 	while (title.endsWith(".")) {
-	    title = title.substring(0, title.length() - 2);
+	    title = title.substring(0, title.length() - 1);
 	}
 
 	return title;
