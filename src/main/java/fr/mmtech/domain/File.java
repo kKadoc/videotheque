@@ -25,7 +25,7 @@ public class File implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "path")
+    @Column(name = "path", unique = true)
     private String path;
 
     @Column(name = "type")

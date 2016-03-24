@@ -40,7 +40,7 @@ public class Video implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "imdb_id")
+    @Column(name = "imdb_id", unique = true)
     private String imdbId;
 
     @Column(name = "title")
