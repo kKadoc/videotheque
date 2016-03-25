@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mmtech.config.Consts;
 import fr.mmtech.domain.File;
 import fr.mmtech.domain.ScanResult;
 import fr.mmtech.domain.Video;
@@ -226,9 +228,12 @@ public class VideoService {
 	}
 
 	String subs = oldMovieFileName.substring(0, oldMovieFileName.lastIndexOf("."));
-	java.io.File subsFile = new java.io.File(subs);
-	if (subsFile.exists()) {
-	    return subs;
+	java.io.File subsFile;
+	for (String ext : Consts.extensionsSub) {
+	    subsFile = new java.io.File(subs + "." + ext);
+	    if (subsFile.exists()) {
+		return subs + "." + ext;
+	    }
 	}
 
 	return null;
@@ -435,9 +440,12 @@ public class VideoService {
     public List<ScanResult> scan() {
 	List<String> dirs = configRepository.listScanDirs();
 	List<ScanResult> files = new ArrayList<ScanResult>();
+	List<File> ignoreList = fileRepository.findAllByType(File.IGNORE_FLAG);
+	List<String> ignoreListPath = ignoreList.stream().map(file -> file.getPath()).collect(Collectors.toList());
+
 	log.debug("SCAN START - - - - - - - - - - - - - - - - - - - - - - -");
 	for (String dir : dirs) {
-	    ScannerUtil scanner = new ScannerUtil(dir, files);
+	    ScannerUtil scanner = new ScannerUtil(dir, files, ignoreListPath);
 	    try {
 		scanner.scan();
 	    } catch (IOException e) {
@@ -447,5 +455,27 @@ public class VideoService {
 	log.debug("SCAN ENDED - - - - - - - - - - - - - - - - - - - - - - -");
 
 	return files;
+    }
+
+    /**
+     * Supprime le fichier
+     * 
+     * @param fileName
+     */
+    public void eraseFile(String fileName) {
+	log.debug("suppression du fichier " + fileName);
+	java.io.File file = new java.io.File(fileName);
+	file.delete();
+    }
+
+    /**
+     * Ajoute le fichier à la liste des fichiers ignorés
+     * 
+     * @param fileName
+     */
+    public void ignoreFile(String fileName) {
+	log.debug("Ajout à la liste des fichiers ignorés du fichier " + fileName);
+	File file = new File(fileName, File.IGNORE_FLAG);
+	fileRepository.save(file);
     }
 }

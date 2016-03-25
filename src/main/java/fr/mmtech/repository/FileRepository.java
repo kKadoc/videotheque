@@ -12,4 +12,6 @@ import fr.mmtech.domain.File;
 public interface FileRepository extends JpaRepository<File, Long> {
 
     List<File> findAllByPath(String path);
+
+    List<File> findAllByType(String ignoreFlag);
 }

@@ -37,12 +37,6 @@ public class VideoResource {
     @Inject
     private VideoRepository videoRepository;
 
-    // // TODO DELETE
-    // @Inject
-    // private FileRepository fileRepository;
-    // @Inject
-    // private VideoTypeRepository typeRepository;
-
     @Inject
     private VideoService videoService;
 
@@ -150,6 +144,44 @@ public class VideoResource {
 	    return new ResponseEntity(videoService.guess(fileName, keyword), HttpStatus.OK);
 	} catch (Exception e) {
 	    log.error("Error lors de la récupération des suppositions", e);
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+    }
+
+    /**
+     * POST /eraseFile ->erase the file "filename".
+     * 
+     * @throws Exception
+     */
+    @RequestMapping(value = "/eraseFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity eraseFile(@RequestParam(value = "file", required = true) String fileName) throws Exception {
+	log.debug("REST request to erase File : {}", fileName);
+
+	try {
+	    videoService.eraseFile(fileName);
+	    return new ResponseEntity(HttpStatus.OK);
+	} catch (Exception e) {
+	    log.error("Error lors de la suppression du fichier", e);
+	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+    }
+
+    /**
+     * POST /ignoreFile ->add the file "filename" to the ignore list.
+     * 
+     * @throws Exception
+     */
+    @RequestMapping(value = "/ignoreFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity ignoreFile(@RequestParam(value = "file", required = true) String fileName) throws Exception {
+	log.debug("REST request to ignore File : {}", fileName);
+
+	try {
+	    videoService.ignoreFile(fileName);
+	    return new ResponseEntity(HttpStatus.OK);
+	} catch (Exception e) {
+	    log.error("Error lors de l'ajout à la liste des fichiers ignorés", e);
 	    return new ResponseEntity(e.getClass().getName() + ":" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     }

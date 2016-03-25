@@ -87,6 +87,7 @@ angular.module('videothequeApp')
 		//SCAN MODAL
 		
 		$scope.listScanFiles = [];
+		
     	
     	//affichage de la création d'une video
     	$scope.showScanModal = function () {      
@@ -103,6 +104,23 @@ angular.module('videothequeApp')
 					$scope.listScanFiles = VideoService.listScanFiles;
 				});
         };
+        $scope.scanDirs();
+        
+        //supprime le fichier indiqué
+        $scope.eraseFile = function(file) {
+        	VideoService.eraseFile(file.videoPath)
+			.then(function() {
+				$scope.scanDirs();
+			});
+        }
+        
+        //ajoute le fichier à la liste des fichiers ignorés
+        $scope.ignoreFile = function(file) {
+        	VideoService.ignoreFile(file.videoPath)
+			.then(function() {
+				$scope.scanDirs();
+			});
+        }
         
         
         

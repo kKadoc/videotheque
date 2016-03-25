@@ -22,12 +22,14 @@ public class ScannerUtil {
 
     private String root;
     private List<ScanResult> listFiles;
+    private List<String> ignoreList;
 
     private final Logger log = LoggerFactory.getLogger(VideoService.class);
 
-    public ScannerUtil(String root, List<ScanResult> listFiles) {
+    public ScannerUtil(String root, List<ScanResult> listFiles, List<String> ignoreList) {
 	this.root = root;
 	this.listFiles = listFiles;
+	this.ignoreList = ignoreList;
     }
 
     public void scan() throws IOException {
@@ -45,25 +47,30 @@ public class ScannerUtil {
 
 		if (Consts.extensionsVideo.contains(extension)) {
 		    log.debug(path + " video file");
-		    ScanResult sr = new ScanResult(path, null);
 
-		    // si on est dans un sous répertoire du root
-		    if (path.replaceAll(root, "").indexOf(java.io.File.separatorChar) != -1) {
-			// on cherche un sous titre
-			java.io.File[] listSubs = aFile.toFile().getParentFile().listFiles(new FilenameFilter() {
-			    public boolean accept(java.io.File file, String fileName) {
-				String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-				return Consts.extensionsSub.contains(extension);
+		    if (ignoreList.contains(path)) {
+			log.debug("fichier ignoré");
+		    } else {
+			ScanResult sr = new ScanResult(path, null);
+
+			// si on est dans un sous répertoire du root
+			if (path.replaceAll(root, "").indexOf(java.io.File.separatorChar) != -1) {
+			    // on cherche un sous titre
+			    java.io.File[] listSubs = aFile.toFile().getParentFile().listFiles(new FilenameFilter() {
+				public boolean accept(java.io.File file, String fileName) {
+				    String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+				    return Consts.extensionsSub.contains(extension);
+				}
+			    });
+
+			    // par defaut on utilise le premier
+			    if (listSubs.length > 0) {
+				sr.setSubPath(listSubs[0].getAbsolutePath());
 			    }
-			});
-
-			// par defaut on utilise le premier
-			if (listSubs.length > 0) {
-			    sr.setSubPath(listSubs[0].getAbsolutePath());
 			}
-		    }
 
-		    listFiles.add(sr);
+			listFiles.add(sr);
+		    }
 		}
 	    }
 

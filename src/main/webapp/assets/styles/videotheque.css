@@ -24,7 +24,14 @@
 
 #scan-folder {
 	top : 220px;
+}
 
+#scan-folder .badge {
+	position : absolute;
+	top : -5px;
+	right : -10px;
+	
+	background-color: #337ab7;
 }
 
 

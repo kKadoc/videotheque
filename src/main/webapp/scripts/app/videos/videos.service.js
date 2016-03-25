@@ -98,7 +98,7 @@ angular.module('videothequeApp')
     	};
     	
     	/**
-    	 * Netoie le fichier bibliothèque
+    	 * Nettoie le fichier bibliothèque
     	 */
     	service.clearAppDir = function() {
     		return $http({
@@ -121,7 +121,6 @@ angular.module('videothequeApp')
 			    url: 'api/scan', 
 			    method: "GET", 
 	    	}).success(function(response){
-	    		console.log(response);
 	    		service.listScanFiles = response;
 			})
 			.error(function(response) {
@@ -130,6 +129,52 @@ angular.module('videothequeApp')
 			});
     	};
     	
+
+    	/**
+    	 * Supprime le fichier indiqué
+    	 */
+    	service.eraseFile = function(file) {
+    		return $http({
+    		    url: 'api/eraseFile', 
+    		    method: "POST",
+    		    data: { file: file},
+    		    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    		    transformRequest: function(obj) {
+    		      var str = [];
+    		      for(var p in obj)
+    		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    		      return str.join("&");
+    		    }
+    		 }).success(function(data){
+    			 console.log('fichier supprimé');
+    		 })
+    		 .error(function() {
+    			 alert("Error erasing file");
+    		 });
+    	};
+    	
+    	/**
+    	 * Ajoute le fichier indiqué à la liste des fichiers ignorés
+    	 */
+    	service.ignoreFile = function(file) {
+    		return $http({
+    		    url: 'api/ignoreFile', 
+    		    method: "POST",
+    		    data: { file: file},
+    		    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    		    transformRequest: function(obj) {
+    		      var str = [];
+    		      for(var p in obj)
+    		      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    		      return str.join("&");
+    		    }
+    		 }).success(function(data){
+    			 console.log('fichier ignoré');
+    		 })
+    		 .error(function() {
+    			 alert("Error ignoring file");
+    		 });
+    	};
 
     	
     	return service;
