@@ -54,7 +54,6 @@
     <logger name="org.xnio" level="WARN"/>
     <logger name="com.mangofactory.swagger" level="WARN"/>
     <logger name="com.wordnik.swagger" level="WARN"/>
-    <logger name="liquibase" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
