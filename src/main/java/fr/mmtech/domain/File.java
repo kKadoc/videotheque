@@ -20,6 +20,7 @@ public class File implements Serializable {
     public static final String IMG_FLAG = "IMG";
     public static final String VIDEO_FLAG = "VIDEO";
     public static final String SUBS_FLAG = "SUBS";
+    public static final String IGNORE_FLAG = "IGNORE";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
