@@ -1,26 +1,49 @@
 body.dark {
-	background : black;
+	background-color: #111;
 }
 
 body.dark .left-icon {
-	background : #00231E;
+	background : #000;
 	border : none;
-	color : #00CBB0;
+	color : grey;
+	
+	box-shadow : 1px 1px 6px black;
 }
 
 body.dark .left-icon:hover {
-	background : #00231E;
 	color : #FFF;
 }
 
 body.dark .navbar-default {
-    background-color: #00231E;
-    color : #00CBB0;
+    background-color: #000;
+    color : grey;
     border : none;
+    
+    box-shadow : 1px 1px 3px black;
+}
+
+body.dark .navbar-default .navbar-nav > .open > a, body.dark .navbar-default .navbar-nav > .open > a:hover, body.dark .navbar-default .navbar-nav > .open > a:focus {
+	background : #111;
+}
+
+body.dark .dropdown-menu {
+	background : #222;
+}
+
+body.dark .dropdown-menu > .active > a, body.dark .dropdown-menu > .active > a:hover, body.dark .dropdown-menu > .active > a:focus {
+	background : #333;
+}
+
+body.dark .dropdown-menu > li > a {
+	color : grey;
+}
+
+body.dark .nb-videos {
+	color : darkgrey;
 }
 
 body.dark .navbar-default .navbar-nav > li > a, body.dark .navbar-default .navbar-brand {
-    color : #00CBB0;
+    color : grey;
 }
 
 body.dark .navbar-default .navbar-nav > li > a:hover, body.dark .navbar-default .navbar-nav > li > a.active, body.dark .navbar-default .navbar-brand:hover {
@@ -29,30 +52,51 @@ body.dark .navbar-default .navbar-nav > li > a:hover, body.dark .navbar-default 
 
 body.dark .well {
 	background : none;
-	border-color : #00CBB0;
+	border : none;
+	padding :0 0 10px 0;
+	border-radius : 0;
+	
+	box-shadow : 1px 1px 3px black;
+}
+
+body.dark .display select option {
+	background: #111;
+}
+
+body.dark .display input {
+	color : #FFF;
+}
+
+body.dark .display {
+	background : #222;
+	margin : 0 0 10px 0;
 }
 
 body.dark .videos.list .video {
 	background :  none;
-	color : #00CBB0;
+	color : darkgrey;
 	border :  none;
 }
 
 body.dark .btn-group button {
-	background : #00231E;
-	border : none;
-	color : #00CBB0;
+	background : #000;
+	border : 1px solid #000;
+	color : darkgrey;
 }
 body.dark .btn-group button.active, body.dark .btn-group button:hover {
-	background : #00231E;
+	background : #222;
 	color : white;
 }
 
 body.dark input, body.dark .form-control {
 	background : transparent;
-	border: 1px solid #00231E;
+	border: 1px solid darkgrey;
 }
 
 body.dark select.form-control {
 	color : darkgrey;
+}
+
+body.dark .videos.poster .video {
+	box-shadow : none;
 }

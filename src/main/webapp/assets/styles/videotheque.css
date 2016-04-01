@@ -99,24 +99,30 @@
 	cursor : pointer;
 }
 
-.videos .star-icon:hover {
-	color : #F6C500;
+.play-icon {
+	background : #E96500;
+	color :  white;
+	padding : 3px;
 }
 
-.videos .favoris .star-icon{
-	color : #F6C500;
+.info-icon {
+	background : green;
+	color :  white;
+	padding : 3px;
 }
 
-.videos .favoris .star-icon:hover{
-	color : #333;
+.star-icon {
+	background : #FEB710;
+	color :  white;
+	padding : 3px;
 }
 
 .play-icon:hover {
-	color : red;
+	
 }
 
 .info-icon:hover {
-	color : green;
+	
 }
 
 
@@ -167,16 +173,16 @@
 
 .videos.list .play-icon {
 	position : absolute;
-	right :  40px;
-	top : 6px;
+	right :  42px;
+	top : 4px;
 	font-size : 1.4em;
 	cursor : pointer;
 }
 
 .videos.list .info-icon {
 	position : absolute;
-	right :  73px;
-	top : 6px;
+	right :  74px;
+	top : 4px;
 	font-size : 1.4em;
 	cursor : pointer;
 }
@@ -184,7 +190,7 @@
 .videos.list .star-icon {
 	position : absolute;
 	right :  10px;
-	top : 6px;
+	top : 4px;
 	font-size : 1.4em;
 }
 
@@ -263,7 +269,7 @@
 }
 
 .videos.card .video .content {
-	padding : 10px;	
+	padding : 0 10px;	
 	margin-left: 10px;
 	display: inline-block;
 }
@@ -273,6 +279,9 @@
 	right : 5px;
 	top : 5px;
 	font-size : 2em;
+	
+	background : transparent;
+	color : #FEB710;
 }
 
 .videos.card .video .cover{
@@ -282,8 +291,36 @@
 	float : left;
 }
 
+.videos.card p {
+	margin : 0 0 5px;	
+}	
+
+.videos.card .year:before {
+	content :"année de sortie : ";
+	color : grey;
+	font-style : italic;
+}
+
+.videos.card .duration:before {
+	content :"durée : ";
+	color : grey;
+	font-style : italic;
+}
+
+.videos.card .addDate:before {
+	content :"date d'ajout : ";
+	color : grey;
+	font-style : italic;
+}
+
+.videos.card .type:before {
+	content :"genres : ";
+	color : grey;
+	font-style : italic;
+}
+
 .videos.card .rate {
-	display : inline-block;
+	display : block;
 	width: 80px;
 	height: 18px;
 	
@@ -293,9 +330,11 @@
 	background-size: 400px 650px;
 }
 
-.videos.card .play-icon {
+.videos.card .play-icon, .videos.card .info-icon {
 	font-size : 1.4em;
 	cursor : pointer;
+	position : relative;
+	bottom : 0;
 }
 
 
@@ -328,41 +367,58 @@
 	position : absolute;
 }
 
+
 .videos.poster .content {
 	position : absolute;
 	width : 100%;
-	height : 30%;
+	height : 100%;
 	z-index : 2;
 	
 	display : none;
 	
 	bottom : 0;
 	
-	background : rgba(255,255,255,0.8);
+	padding : 0px;
+	background : rgba(255,255,255,0.9);
+}
+
+.videos.poster h4 {
+	margin : 0;
+	padding : 15px 10px;	
+	background : rgba(255,255,255,0.5);
 }
 
 .videos.poster .video:hover .content {
 	display: block;
 }
 
-.videos.poster .content p, .videos.poster .content i, .videos.poster .content h4 {
+.videos.poster .video:hover .star-icon {
+	display : block;
+}
+
+.videos.poster .content p, .videos.poster .content .rate {
 	display : none;
 }
 
-.videos.poster .content .play-icon {
-	display : block;
-	font-size : 4em;
-	text-align : center;
-	margin-top : 20px;
+.videos.poster .content .play-icon, .videos.poster .content .info-icon {
+	font-size : 2em;
 	cursor : pointer;
+	position : absolute;
+	bottom : 10px;
+	right : 50px;
+}
+
+.videos.poster .content .play-icon {
+	right : 90px;
 }
 
 .videos.poster .star-icon {
 	position : absolute;
-	right : 5px;
-	top : 5px;
+	right : 10px;
+	bottom: 10px;
 	font-size : 2em;
-	text-shadow : 1px 1px 3px black;
+	
+	z-index : 3;
 	
 	display : none;
 }
